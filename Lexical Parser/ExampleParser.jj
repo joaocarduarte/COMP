@@ -38,7 +38,11 @@ TOKEN: {
 }
 
 void start() : {} {
-    "{" <NAME> <STRING_NAME_CONTENT> (<CONTENT> <STRING_NAME_CONTENT>)? (<CODE> <STRING_CODE>)? <CHILDREN> "[" (start()"]" "," "}")* "]" "," "}"
 
-    <EOF>
+  expr() ","
+
+}
+
+void expr() : {} {
+  "{" <NAME> <STRING_NAME_CONTENT> (<CONTENT> <STRING_NAME_CONTENT>)? (<CODE> <STRING_CODE>)? <CHILDREN> "[" (expr())* "]" "," "}"
 }

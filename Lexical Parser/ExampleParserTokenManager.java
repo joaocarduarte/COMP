@@ -28,13 +28,13 @@ static private int jjMoveStringLiteralDfa0_0(){
    switch(curChar)
    {
       case 44:
-         return jjStopAtPos(0, 14);
-      case 91:
-         return jjStopAtPos(0, 12);
-      case 93:
-         return jjStopAtPos(0, 13);
-      case 123:
          return jjStopAtPos(0, 11);
+      case 91:
+         return jjStopAtPos(0, 13);
+      case 93:
+         return jjStopAtPos(0, 14);
+      case 123:
+         return jjStopAtPos(0, 12);
       case 125:
          return jjStopAtPos(0, 15);
       default :
@@ -279,8 +279,8 @@ static final int[] jjnextStates = {
 
 /** Token literal values. */
 public static final String[] jjstrLiteralImages = {
-"", null, null, null, null, null, null, null, null, null, null, "\173", 
-"\133", "\135", "\54", "\175", };
+"", null, null, null, null, null, null, null, null, null, null, "\54", "\173", 
+"\133", "\135", "\175", };
 static protected Token jjFillToken()
 {
    final Token t;

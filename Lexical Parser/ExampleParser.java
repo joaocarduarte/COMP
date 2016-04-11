@@ -8,7 +8,12 @@ public class ExampleParser implements ExampleParserConstants {
       }
 
   static final public void start() throws ParseException {
+    expr();
     jj_consume_token(11);
+  }
+
+  static final public void expr() throws ParseException {
+    jj_consume_token(12);
     jj_consume_token(NAME);
     jj_consume_token(STRING_NAME_CONTENT);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -32,11 +37,11 @@ public class ExampleParser implements ExampleParserConstants {
       ;
     }
     jj_consume_token(CHILDREN);
-    jj_consume_token(12);
+    jj_consume_token(13);
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case 11:{
+      case 12:{
         ;
         break;
         }
@@ -44,12 +49,11 @@ public class ExampleParser implements ExampleParserConstants {
         jj_la1[2] = jj_gen;
         break label_1;
       }
-      start();
-      jj_consume_token(13);
-      jj_consume_token(14);
-      jj_consume_token(15);
+      expr();
     }
-    jj_consume_token(0);
+    jj_consume_token(14);
+    jj_consume_token(11);
+    jj_consume_token(15);
   }
 
   static private boolean jj_initialized_once = false;
@@ -68,7 +72,7 @@ public class ExampleParser implements ExampleParserConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x80,0x100,0x800,};
+      jj_la1_0 = new int[] {0x80,0x100,0x1000,};
    }
 
   /** Constructor with InputStream. */

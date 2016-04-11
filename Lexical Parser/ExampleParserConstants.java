@@ -37,10 +37,10 @@ public interface ExampleParserConstants {
     "<CODE>",
     "<STRING_NAME_CONTENT>",
     "<STRING_CODE>",
+    "\",\"",
     "\"{\"",
     "\"[\"",
     "\"]\"",
-    "\",\"",
     "\"}\"",
   };
 

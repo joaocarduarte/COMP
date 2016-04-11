@@ -1,5 +1,6 @@
 options {
     IGNORE_CASE = true;
+    LOOKAHEAD = 1;
 }
 
 PARSER_BEGIN(ExampleParser)
@@ -31,15 +32,13 @@ TOKEN: {
 
 TOKEN: {
     //<STRING_NAME: "\""(["a"-"z","A"-"Z"])+ "\"">
-     <STRING_NAME_CONTENT: "\""(["(", ")", "<", ">", ".", ":", "\"", "a"-"z", "A"-"Z"])* "\"">
-    | <STRING_CODE: "\""("(""/" (["a"-"z","A"-"Z"])+ ")")? "\"">
+     <STRING_NAME_CONTENT: "\""(["(", ")", "<", ">", ".", ":", "\"", "a"-"z", "A"-"Z"])* "\"" ",">
+    | <STRING_CODE: "\""("(""/" (["a"-"z","A"-"Z"])+ ")")? "\"" ",">
   //  | <STRING_CHILDREN: (<NAME> <STRING_NAME>) (<CONTENT> <STRING_CONTENT>)? (<CODE> <STRING_CODE>)? >
 }
 
 void start() : {} {
-  (
-    "{" <NAME> <STRING_NAME_CONTENT> (<CONTENT> <STRING_NAME_CONTENT>)? (<CODE> <STRING_CODE>)? <CHILDREN> "[" "]" "}"
-  )*
+    "{" <NAME> <STRING_NAME_CONTENT> (<CONTENT> <STRING_NAME_CONTENT>)? (<CODE> <STRING_CODE>)? <CHILDREN> "[" (start()"]" "," "}")* "]" "," "}"
 
     <EOF>
 }

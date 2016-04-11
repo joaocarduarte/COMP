@@ -1,0 +1,193 @@
+{
+   "name": "Root",
+   "children": [
+   {
+      "name": "RootPackage",
+      "content": "",
+      "children": [
+      {
+         "name": "Package",
+         "content": "unnamed package",
+         "children": [
+         {
+            "name": "Class",
+            "content": "HelloWorld",
+            "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+            "children": [
+            {
+               "name": "Constructor",
+               "content": "HelloWorld()",
+               "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+               "children": [
+               {
+                  "name": "Block",
+                  "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+                  "children": [
+                  {
+                     "name": "Invocation",
+                     "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+                     "children": [
+                     {
+                        "name": "TypeReference",
+                        "content": "Object",
+                        "children": [
+                        {
+                           "name": "PackageReference",
+                           "content": "java.lang",
+                           "children": [],
+                        }],
+                     },
+                     {
+                        "name": "ExecutableReference",
+                        "content": "<init>",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "Object",
+                           "children": [
+                           {
+                              "name": "PackageReference",
+                              "content": "java.lang",
+                              "children": [],
+                           }],
+                        },
+                        {
+                           "name": "TypeReference",
+                           "content": "Object",
+                           "children": [
+                           {
+                              "name": "PackageReference",
+                              "content": "java.lang",
+                              "children": [],
+                           }],
+                        }],
+                     }],
+                  }],
+               }],
+            },
+            {
+               "name": "Method",
+               "content": "main",
+               "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:4)",
+               "children": [
+               {
+                  "name": "TypeReference",
+                  "content": "void",
+                  "children": [],
+               },
+               {
+                  "name": "Parameter",
+                  "content": "args",
+                  "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:4)",
+                  "children": [
+                  {
+                     "name": "ArrayTypeReference",
+                     "content": "Array",
+                     "children": [
+                     {
+                        "name": "TypeReference",
+                        "content": "String",
+                        "children": [
+                        {
+                           "name": "PackageReference",
+                           "content": "java.lang",
+                           "children": [],
+                        }],
+                     }],
+                  }],
+               },
+               {
+                  "name": "Block",
+                  "children": [
+                  {
+                     "name": "Invocation",
+                     "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:6)",
+                     "children": [
+                     {
+                        "name": "TypeReference",
+                        "content": "void",
+                        "children": [],
+                     },
+                     {
+                        "name": "FieldRead",
+                        "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:6)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "PrintStream",
+                           "children": [
+                           {
+                              "name": "PackageReference",
+                              "content": "java.io",
+                              "children": [],
+                           }],
+                        },
+                        {
+                           "name": "FieldReference",
+                           "content": "out",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "System",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.lang",
+                                 "children": [],
+                              }],
+                           },
+                           {
+                              "name": "TypeReference",
+                              "content": "PrintStream",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.io",
+                                 "children": [],
+                              }],
+                           }],
+                        }],
+                     },
+                     {
+                        "name": "ExecutableReference",
+                        "content": "println",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "PrintStream",
+                           "children": [
+                           {
+                              "name": "PackageReference",
+                              "content": "java.io",
+                              "children": [],
+                           }],
+                        },
+                        {
+                           "name": "TypeReference",
+                           "content": "void",
+                           "children": [],
+                        }],
+                     },
+                     {
+                        "name": "Literal",
+                        "content": ""Hello"",
+                        "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:6)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "String",
+                           "children": [
+                           {
+                              "name": "PackageReference",
+                              "content": "java.lang",
+                              "children": [],
+                           }],
+                        }],
+                     }],
+                  }],
+               }],
+            }],
+         }],
+      }],
+   }],
+}

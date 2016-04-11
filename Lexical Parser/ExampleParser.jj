@@ -1,0 +1,45 @@
+options {
+    IGNORE_CASE = true;
+}
+
+PARSER_BEGIN(ExampleParser)
+
+public class ExampleParser {
+    public static void main(String args[]) throws ParseException {
+        ExampleParser parser;
+        parser = new ExampleParser(System.in);
+        parser.start();
+      }
+}
+
+PARSER_END(ExampleParser)
+
+SKIP : {
+  " "
+  | "\t"
+  | "\n"
+  | "\r"
+}
+
+//Reserved words
+TOKEN: {
+    <NAME: "\"name\""":" >
+    | <CHILDREN: "\"children\"" ":">
+    | <CONTENT: "\"content\"" ":">
+    | <CODE: "\"code\"" ":">
+}
+
+TOKEN: {
+    //<STRING_NAME: "\""(["a"-"z","A"-"Z"])+ "\"">
+     <STRING_NAME_CONTENT: "\""(["(", ")", "<", ">", ".", ":", "\"", "a"-"z", "A"-"Z"])* "\"">
+    | <STRING_CODE: "\""("(""/" (["a"-"z","A"-"Z"])+ ")")? "\"">
+  //  | <STRING_CHILDREN: (<NAME> <STRING_NAME>) (<CONTENT> <STRING_CONTENT>)? (<CODE> <STRING_CODE>)? >
+}
+
+void start() : {} {
+  (
+    "{" <NAME> <STRING_NAME_CONTENT> (<CONTENT> <STRING_NAME_CONTENT>)? (<CODE> <STRING_CODE>)? <CHILDREN> "[" "]" "}"
+  )*
+
+    <EOF>
+}

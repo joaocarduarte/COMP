@@ -6,9 +6,9 @@ options {
 PARSER_BEGIN(ExampleParser)
 
 public class ExampleParser {
-    public static void main(String args[]) throws ParseException {
+    public static void main(String args[]) throws ParseException, java.io.FileNotFoundException {
         ExampleParser parser;
-        parser = new ExampleParser(System.in);
+        parser = new ExampleParser(new java.io.FileInputStream(args[0]));
         parser.start();
       }
 }
@@ -24,25 +24,27 @@ SKIP : {
 
 //Reserved words
 TOKEN: {
-    <NAME: "\"name\""":" >
-    | <CHILDREN: "\"children\"" ":">
-    | <CONTENT: "\"content\"" ":">
-    | <CODE: "\"code\"" ":">
+    <NAME: "\"" "name" "\"">
+    | <CHILDREN: "\"""children""\"">
+    | <CONTENT: "\"""content""\"">
+    | <CODE: "\"" "code" "\"">
 }
 
 TOKEN: {
     //<STRING_NAME: "\""(["a"-"z","A"-"Z"])+ "\"">
-     <STRING_NAME_CONTENT: "\""(["(", ")", "<", ">", ".", ":", "\"", "a"-"z", "A"-"Z"])* "\"" ",">
-    | <STRING_CODE: "\""("(""/" (["a"-"z","A"-"Z"])+ ")")? "\"" ",">
+     <STRING_NAME_CONTENT: "\"" (("\"" (["a"-"z", "A"-"Z", " ", "0"-"9"])* "\"") | ( ("<")?  ["a"-"z", "A"-"Z"](["a"-"z", " ", "A"-"Z", "0"-"9"])* (">")?)(("("(["a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*("," [" ","a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*)*)* ")")* | ("."   ["a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*  )*))*"\"" >
+     | <STRING_CODE: "\"" "(" ("/"(["a"-"z", " ", "A"-"Z", "0"-"9"])+)+ "." (["a"-"z", "A"-"Z", "0"-"9"])+ ":" (["0"-"9"])+ ")" "\"" >
   //  | <STRING_CHILDREN: (<NAME> <STRING_NAME>) (<CONTENT> <STRING_CONTENT>)? (<CODE> <STRING_CODE>)? >
 }
 
 void start() : {} {
-
-  expr() ","
-
+  expr() <EOF>
 }
 
 void expr() : {} {
-  "{" <NAME> <STRING_NAME_CONTENT> (<CONTENT> <STRING_NAME_CONTENT>)? (<CODE> <STRING_CODE>)? <CHILDREN> "[" (expr())* "]" "," "}"
+  "{" <NAME> ":" <STRING_NAME_CONTENT> ","
+  (<CONTENT> ":" <STRING_NAME_CONTENT> ",")?
+  (<CODE> ":" <STRING_CODE> ",")?
+  <CHILDREN> ":"
+  "[" (expr())? "]" "," "}" ("," expr())?
 }

@@ -8,7 +8,7 @@ PARSER_BEGIN(ExampleParser)
 public class ExampleParser {
     public static void main(String args[]) throws ParseException, java.io.FileNotFoundException {
         ExampleParser parser;
-        parser = new ExampleParser(new java.io.FileInputStream(args[0]));
+        parser = new ExampleParser(System.in);
         parser.start();
       }
 }
@@ -31,10 +31,10 @@ TOKEN: {
 }
 
 TOKEN: {
-    //<STRING_NAME: "\""(["a"-"z","A"-"Z"])+ "\"">
-     <STRING_NAME_CONTENT: "\"" (("\"" (["a"-"z", "A"-"Z", " ", "0"-"9"])* "\"") | ( ("<")?  ["a"-"z", "A"-"Z"](["a"-"z", " ", "A"-"Z", "0"-"9"])* (">")?)(("("(["a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*("," [" ","a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*)*)* ")")* | ("."   ["a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*  )*))*"\"" >
+     <STRING_NAME_CONTENT: "\"" (("\"" (["a"-"z", "A"-"Z", " ", "0"-"9"])* "\"")  | ("==") | ("_++") | ("_--")
+
+     | ( ("<")?  (["a"-"z", " ", "A"-"Z", "0"-"9"])* (">")?)(("("(["a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*("," [" ","a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*)*)* ")")* | ("."   ["a"-"z", "A"-"Z"](["a"-"z", "A"-"Z", "0"-"9"])*  )*))*"\"" >
      | <STRING_CODE: "\"" "(" ("/"(["a"-"z", " ", "A"-"Z", "0"-"9"])+)+ "." (["a"-"z", "A"-"Z", "0"-"9"])+ ":" (["0"-"9"])+ ")" "\"" >
-  //  | <STRING_CHILDREN: (<NAME> <STRING_NAME>) (<CONTENT> <STRING_CONTENT>)? (<CODE> <STRING_CODE>)? >
 }
 
 void start() : {} {
@@ -42,9 +42,9 @@ void start() : {} {
 }
 
 void expr() : {} {
+
   "{" <NAME> ":" <STRING_NAME_CONTENT> ","
   (<CONTENT> ":" <STRING_NAME_CONTENT> ",")?
   (<CODE> ":" <STRING_CODE> ",")?
-  <CHILDREN> ":"
-  "[" (expr())? "]" "," "}" ("," expr())?
+  (<CHILDREN> ":"   "[" (expr())? "]" "," )? "}" ("," expr())?
 }

@@ -3,7 +3,7 @@
 public class ExampleParser implements ExampleParserConstants {
     public static void main(String args[]) throws ParseException, java.io.FileNotFoundException {
         ExampleParser parser;
-        parser = new ExampleParser(new java.io.FileInputStream(args[0]));
+        parser = new ExampleParser(System.in);
         parser.start();
       }
 
@@ -42,20 +42,28 @@ public class ExampleParser implements ExampleParserConstants {
       jj_la1[1] = jj_gen;
       ;
     }
-    jj_consume_token(CHILDREN);
-    jj_consume_token(12);
-    jj_consume_token(14);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 11:{
-      expr();
+    case CHILDREN:{
+      jj_consume_token(CHILDREN);
+      jj_consume_token(12);
+      jj_consume_token(14);
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case 11:{
+        expr();
+        break;
+        }
+      default:
+        jj_la1[2] = jj_gen;
+        ;
+      }
+      jj_consume_token(15);
+      jj_consume_token(13);
       break;
       }
     default:
-      jj_la1[2] = jj_gen;
+      jj_la1[3] = jj_gen;
       ;
     }
-    jj_consume_token(15);
-    jj_consume_token(13);
     jj_consume_token(16);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case 13:{
@@ -64,7 +72,7 @@ public class ExampleParser implements ExampleParserConstants {
       break;
       }
     default:
-      jj_la1[3] = jj_gen;
+      jj_la1[4] = jj_gen;
       ;
     }
   }
@@ -79,13 +87,13 @@ public class ExampleParser implements ExampleParserConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[4];
+  static final private int[] jj_la1 = new int[5];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x80,0x100,0x800,0x2000,};
+      jj_la1_0 = new int[] {0x80,0x100,0x800,0x40,0x2000,};
    }
 
   /** Constructor with InputStream. */
@@ -106,7 +114,7 @@ public class ExampleParser implements ExampleParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -120,7 +128,7 @@ public class ExampleParser implements ExampleParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -137,7 +145,7 @@ public class ExampleParser implements ExampleParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -147,7 +155,7 @@ public class ExampleParser implements ExampleParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -163,7 +171,7 @@ public class ExampleParser implements ExampleParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -172,7 +180,7 @@ public class ExampleParser implements ExampleParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -228,7 +236,7 @@ public class ExampleParser implements ExampleParserConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

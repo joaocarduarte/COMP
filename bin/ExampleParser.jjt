@@ -10,8 +10,8 @@ public class ExampleParser {
     public static void main(String args[]) throws ParseException, java.io.FileNotFoundException {
         ExampleParser parser;
         parser = new ExampleParser(new java.io.FileInputStream(args[0]));
-        SimpleNode root = parser.pila();
-       // root.dump("");
+        SimpleNode root = parser.start();
+        //root.dump("");
         root.printstuff("");
       }
 }
@@ -84,32 +84,29 @@ TOKEN: {
     |   <SINGLE_QUOTED_STRING: "\'" ( (~["\'","\\"]) | ("\\" ( ["n","t","b","r","f","\\","\'"] ) ) )* "\'">
 }
 
-SimpleNode pila() : {} {
-  expr1() <EOF> {return jjtThis;}
+SimpleNode start() : {} {
+  expr1()expr4() <EOF> {return jjtThis;}
 }
 
 void expr1() #NAME : {Token t;} {
 
   <O_OPENBRACE> <NAME> <O_COLON> t = <STRING_NAME> <O_COMMA>
   {jjtThis.value = t.image;}
-/* {
-    System.out.println(t.image); }*/
-  (expr2())?
-  (expr3())?
-  (expr4())?
+  
 }
 
 void expr2() #CONTENT: {Token t;} {
-
   (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME>)  <O_COMMA> {jjtThis.value = t.image;})
 }
-
-
 
 void expr3() #CODE: {Token t;} {
   (<CODE> <O_COLON> t = <STRING_CODE> <O_COMMA> {jjtThis.value = t.image;})
 }
 
 void expr4() #CHILDREN: {} {
-  (<CHILDREN> <O_COLON> <O_OPENBRACKET> (expr1())? <O_CLOSEBRACKET> <O_COMMA> )? <O_CLOSEBRACE> (<O_COMMA> expr1())?
+      (<CHILDREN> <O_COLON> <O_OPENBRACKET> (expr1())? (expr2())? (expr3())? (expr4())? <O_CLOSEBRACKET> <O_COMMA> )?
+    <O_CLOSEBRACE> (<O_COMMA> expr1() (expr2())? (expr3())? (expr4())?)?  
+  
+  	
 }
+	

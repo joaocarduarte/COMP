@@ -15,8 +15,8 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
         ExampleParser parser;
         parser = new ExampleParser(new java.io.FileInputStream(args[0]));
         SimpleNode root = parser.start();
-        //root.dump("");
-        root.printstuff("");
+        root.dump("");
+        //root.printstuff("");
       }
 }
 

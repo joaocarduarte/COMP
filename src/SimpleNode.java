@@ -11,6 +11,9 @@ class SimpleNode implements Node {
 	protected Node[] children;
 	protected int id; 
 	protected Object value;
+	protected Object name;
+	protected Object content;
+	protected Object code;
 	protected ExampleParser parser;
 
 	public SimpleNode(int i) {
@@ -66,7 +69,7 @@ class SimpleNode implements Node {
      out its children. */
 
 	public void dump(String prefix) {
-		System.out.println(toString(prefix));
+		System.out.println(toString(prefix) + name);
 		if (children != null) {
 			for (int i = 0; i < children.length; ++i) {
 				SimpleNode n = (SimpleNode)children[i];
@@ -78,7 +81,7 @@ class SimpleNode implements Node {
 		}
 	}
 	public void printstuff(String prefix){
-		System.out.println(value);
+		//System.out.println(value);
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter("dotfile.dot", "UTF-8");
@@ -89,7 +92,7 @@ class SimpleNode implements Node {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		writer.println("graph graphname {");
+		writer.println("graph graphname{");
 		drawtherest(writer,prefix,prefix);
 		writer.println("}");
 		writer.close();
@@ -110,10 +113,11 @@ class SimpleNode implements Node {
 	    }
 		 */
 		String temp;
-		if (children != null) {
-			for (int i = 0; i < children.length; ++i) {
-				SimpleNode n = (SimpleNode)children[i];
-				writer.println(n.parent + "--" + n.toString(prefix));
+		if (this.children != null) {
+			for (int i = 0; i < this.children.length; ++i) {
+				SimpleNode n = (SimpleNode)this.children[i];
+				SimpleNode p = (SimpleNode)n.parent;
+				writer.println(p.name + " -- " + n.name + ";");
 				if(n != null)
 					//  writer.print("gotcha");
 

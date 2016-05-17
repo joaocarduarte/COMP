@@ -15,8 +15,8 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
         ExampleParser parser;
         parser = new ExampleParser(new java.io.FileInputStream(args[0]));
         SimpleNode root = parser.start();
-        root.dump("");
-        //root.printstuff("");
+        //root.dump("");
+        root.printstuff("");
       }
 }
 
@@ -95,11 +95,11 @@ SimpleNode start() : {/*@bgen(jjtree) start */
 /*@egen*/} {/*@bgen(jjtree) start */
   try {
 /*@egen*/
-  expr1()expr4() <EOF>/*@bgen(jjtree)*/
-                       {
-                         jjtree.closeNodeScope(jjtn000, true);
-                         jjtc000 = false;
-                       }
+  expr1() <EOF>/*@bgen(jjtree)*/
+                {
+                  jjtree.closeNodeScope(jjtn000, true);
+                  jjtc000 = false;
+                }
 /*@egen*/ {return jjtn000;}/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
@@ -123,102 +123,36 @@ SimpleNode start() : {/*@bgen(jjtree) start */
 /*@egen*/
 }
 
-void expr1()       : {/*@bgen(jjtree) NAME */
-                      SimpleNode jjtn000 = new SimpleNode(JJTNAME);
+void expr1()       : {/*@bgen(jjtree) NODE */
+                      SimpleNode jjtn000 = new SimpleNode(JJTNODE);
                       boolean jjtc000 = true;
                       jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;} {/*@bgen(jjtree) NAME */
+/*@egen*/Token t;} {/*@bgen(jjtree) NODE */
   try {
 /*@egen*/
-
-  <O_OPENBRACE> <NAME> <O_COLON> t = <STRING_NAME> <O_COMMA>/*@bgen(jjtree)*/
-  {
-    jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-  }
-/*@egen*/
-  {jjtn000.value = t.image;}/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-  }
-/*@egen*/
-  
-}
-
-void expr2()         : {/*@bgen(jjtree) CONTENT */
-                        SimpleNode jjtn000 = new SimpleNode(JJTCONTENT);
-                        boolean jjtc000 = true;
-                        jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;} {/*@bgen(jjtree) CONTENT */
-  try {
-/*@egen*/
-  (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME>)  <O_COMMA>/*@bgen(jjtree)*/
-                                                                              {
-                                                                                jjtree.closeNodeScope(jjtn000, true);
-                                                                                jjtc000 = false;
-                                                                              }
-/*@egen*/ {jjtn000.value = t.image;})/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-  }
-/*@egen*/
-}
-
-void expr3()      : {/*@bgen(jjtree) CODE */
-                     SimpleNode jjtn000 = new SimpleNode(JJTCODE);
-                     boolean jjtc000 = true;
-                     jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;} {/*@bgen(jjtree) CODE */
-  try {
-/*@egen*/
-  (<CODE> <O_COLON> t = <STRING_CODE> <O_COMMA>/*@bgen(jjtree)*/
-                                                {
-                                                  jjtree.closeNodeScope(jjtn000, true);
-                                                  jjtc000 = false;
-                                                }
-/*@egen*/ {jjtn000.value = t.image;})/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-  }
-/*@egen*/
-}
-
-void expr4()          : {/*@bgen(jjtree) CHILDREN */
-  SimpleNode jjtn000 = new SimpleNode(JJTCHILDREN);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/} {/*@bgen(jjtree) CHILDREN */
-    try {
-/*@egen*/
-      (<CHILDREN> <O_COLON> <O_OPENBRACKET> (expr1())? (expr2())? (expr3())? (expr4())? <O_CLOSEBRACKET> <O_COMMA> )?
-    <O_CLOSEBRACE> (<O_COMMA> expr1() (expr2())? (expr3())? (expr4())?)?/*@bgen(jjtree)*/
-    } catch (Throwable jjte000) {
-      if (jjtc000) {
-        jjtree.clearNodeScope(jjtn000);
-        jjtc000 = false;
-      } else {
-        jjtree.popNode();
-      }
-      if (jjte000 instanceof RuntimeException) {
-        throw (RuntimeException)jjte000;
-      }
-      if (jjte000 instanceof ParseException) {
-        throw (ParseException)jjte000;
-      }
-      throw (Error)jjte000;
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-      }
-    }
-/*@egen*/  
-  
-  	
-}
 	
+  <O_OPENBRACE> <NAME> <O_COLON> t = <STRING_NAME> <O_COMMA> {jjtn000.name = t.image;}
+  (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME>)  <O_COMMA> {jjtn000.content = t.image;})?
+  (<CODE> <O_COLON> t = <STRING_CODE> <O_COMMA> {jjtn000.code = t.image;})?  <CHILDREN> <O_COLON> <O_OPENBRACKET> (expr1())? (<O_COMMA> expr1())* <O_CLOSEBRACKET> <O_COMMA>  <O_CLOSEBRACE>/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+  }
+/*@egen*/
+  
+}

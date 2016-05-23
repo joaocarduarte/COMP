@@ -15,6 +15,8 @@ class SimpleNode implements Node {
 	protected Object content;
 	protected Object code;
 	protected ExampleParser parser;
+	protected  static Boolean foundmain = false;
+
 
 	public SimpleNode(int i) {
 		id = i;
@@ -93,7 +95,8 @@ class SimpleNode implements Node {
 			e.printStackTrace();
 		}
 		writer.println("graph graphname{");
-		drawtherest(writer,prefix,prefix);
+		//drawtherest(writer,prefix,prefix);
+		filter(writer,prefix);
 		writer.println("}");
 		writer.close();
 	}
@@ -123,6 +126,51 @@ class SimpleNode implements Node {
 
 					n.drawtherest(writer, prefix,prefix);
 			}
+		}
+	}
+
+	public void filter(PrintWriter writer,String string) {
+		// TODO Auto-generated method stub
+		String temp;
+		if (this.children != null) {
+			for (int i = 0; i < this.children.length; ++i) {
+				SimpleNode n = (SimpleNode)this.children[i];
+				SimpleNode p = (SimpleNode)n.parent;
+				if(foundmain)
+				{	
+					if(n.name.equals("\"Block\""))
+						analyzeblock(n);
+					
+				}
+				if(n.name!=null){
+				if(n.name.equals("\"Method\"")){
+					if(n.content.equals("\"main\"")){
+				writer.println(n.name + " -- " + n.content + ";");
+					foundmain = true;	
+					}
+				}
+				}
+				
+				//System.out.println(n.name);
+				if(n != null)
+					//  writer.print("gotcha");
+
+					n.filter(writer, string);
+			}
+		}
+		
+	}
+
+	private void analyzeblock(SimpleNode n) {
+		// TODO Auto-generated method stub
+		
+		if(n.children !=null){
+		for(int i=0;i< n.children.length; ++i) {
+			SimpleNode e = (SimpleNode)n.children[i];
+			SimpleNode p = (SimpleNode)e.parent;
+			System.out.println(e.name);
+			e.analyzeblock(e);
+		}
 		}
 	}
 }

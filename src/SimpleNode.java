@@ -140,17 +140,43 @@ class SimpleNode implements Node {
 				{	
 					if(n.name.equals("\"Block\""))
 						analyzeblock(n);
-					
+
 				}
 				if(n.name!=null){
-				if(n.name.equals("\"Method\"")){
-					if(n.content.equals("\"main\"")){
-				writer.println(n.name + " -- " + n.content + ";");
-					foundmain = true;	
+					if(n.name.equals("\"Method\"")){
+						if(n.content.equals("\"main\"")){
+							SimpleNode c = (SimpleNode)n.children[0];
+							writer.print(c.content + " " + n.content +"(");
+							foundmain = true;
+
+							if(n.children.length == 2) //estamos a contar que exista sempre Block
+								writer.println(")");
+							else{
+
+								for (int j = 1; j < n.children.length - 1; j++) { 
+									c = (SimpleNode)n.children[j];
+									SimpleNode cc = (SimpleNode)c.children[0];
+									
+									if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
+										writer.print(cc.content + " " + c.content);
+									
+									if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
+										SimpleNode ccc = (SimpleNode)cc.children[0];
+										writer.print(ccc.content + "[] " + c.content);
+									}
+									
+									if(j == n.children.length - 2){
+										writer.println(")");
+										break;
+									}
+									else{
+										writer.print(", ");
+									}
+								}
+							}
+						}
 					}
 				}
-				}
-				
 				//System.out.println(n.name);
 				if(n != null)
 					//  writer.print("gotcha");
@@ -158,19 +184,19 @@ class SimpleNode implements Node {
 					n.filter(writer, string);
 			}
 		}
-		
+
 	}
 
 	private void analyzeblock(SimpleNode n) {
 		// TODO Auto-generated method stub
-		
+
 		if(n.children !=null){
-		for(int i=0;i< n.children.length; ++i) {
-			SimpleNode e = (SimpleNode)n.children[i];
-			SimpleNode p = (SimpleNode)e.parent;
-			System.out.println(e.name);
-			e.analyzeblock(e);
-		}
+			for(int i=0;i< n.children.length; ++i) {
+				SimpleNode e = (SimpleNode)n.children[i];
+				SimpleNode p = (SimpleNode)e.parent;
+				System.out.println(e.name);
+				e.analyzeblock(e);
+			}
 		}
 	}
 }

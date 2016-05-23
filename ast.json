@@ -7,25 +7,25 @@
       "children": [
       {
          "name": "Package",
-         "content": "unnamed package",
+         "content": "main",
          "children": [
          {
             "name": "Class",
-            "content": "HelloWorld",
-            "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+            "content": "Main",
+            "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:3)",
             "children": [
             {
                "name": "Constructor",
-               "content": "HelloWorld()",
-               "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+               "content": "Main()",
+               "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:3)",
                "children": [
                {
                   "name": "Block",
-                  "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+                  "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:3)",
                   "children": [
                   {
                      "name": "Invocation",
-                     "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:2)",
+                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:3)",
                      "children": [
                      {
                         "name": "TypeReference",
@@ -68,7 +68,7 @@
             {
                "name": "Method",
                "content": "main",
-               "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:4)",
+               "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:5)",
                "children": [
                {
                   "name": "TypeReference",
@@ -78,7 +78,7 @@
                {
                   "name": "Parameter",
                   "content": "args",
-                  "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:4)",
+                  "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:5)",
                   "children": [
                   {
                      "name": "ArrayTypeReference",
@@ -100,42 +100,85 @@
                   "name": "Block",
                   "children": [
                   {
-                     "name": "Invocation",
-                     "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:6)",
+                     "name": "LocalVariable",
+                     "content": "a",
+                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:7)",
                      "children": [
                      {
                         "name": "TypeReference",
-                        "content": "void",
+                        "content": "int",
                         "children": [],
                      },
                      {
-                        "name": "FieldRead",
-                        "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:6)",
+                        "name": "Literal",
+                        "content": "2",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:7)",
                         "children": [
                         {
                            "name": "TypeReference",
-                           "content": "PrintStream",
-                           "children": [
-                           {
-                              "name": "PackageReference",
-                              "content": "java.io",
-                              "children": [],
-                           }],
+                           "content": "int",
+                           "children": [],
+                        }],
+                     }],
+                  },
+                  {
+                     "name": "If",
+                     "children": [
+                     {
+                        "name": "BinaryOperator",
+                        "content": ">",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "boolean",
+                           "children": [],
                         },
                         {
-                           "name": "FieldReference",
-                           "content": "out",
+                           "name": "VariableRead",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
                            "children": [
                            {
                               "name": "TypeReference",
-                              "content": "System",
+                              "content": "int",
+                              "children": [],
+                           },
+                           {
+                              "name": "LocalVariableReference",
+                              "content": "a",
                               "children": [
                               {
-                                 "name": "PackageReference",
-                                 "content": "java.lang",
+                                 "name": "TypeReference",
+                                 "content": "int",
                                  "children": [],
                               }],
-                           },
+                           }],
+                        },
+                        {
+                           "name": "Literal",
+                           "content": "2",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           }],
+                        }],
+                     },
+                     {
+                        "name": "Invocation",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "void",
+                           "children": [],
+                        },
+                        {
+                           "name": "FieldRead",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                           "children": [
                            {
                               "name": "TypeReference",
                               "content": "PrintStream",
@@ -145,42 +188,153 @@
                                  "content": "java.io",
                                  "children": [],
                               }],
+                           },
+                           {
+                              "name": "FieldReference",
+                              "content": "out",
+                              "children": [
+                              {
+                                 "name": "TypeReference",
+                                 "content": "System",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.lang",
+                                    "children": [],
+                                 }],
+                              },
+                              {
+                                 "name": "TypeReference",
+                                 "content": "PrintStream",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.io",
+                                    "children": [],
+                                 }],
+                              }],
                            }],
-                        }],
-                     },
-                     {
-                        "name": "ExecutableReference",
-                        "content": "println",
-                        "children": [
+                        },
                         {
-                           "name": "TypeReference",
-                           "content": "PrintStream",
+                           "name": "ExecutableReference",
+                           "content": "println",
                            "children": [
                            {
-                              "name": "PackageReference",
-                              "content": "java.io",
+                              "name": "TypeReference",
+                              "content": "PrintStream",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.io",
+                                 "children": [],
+                              }],
+                           },
+                           {
+                              "name": "TypeReference",
+                              "content": "void",
                               "children": [],
                            }],
                         },
                         {
-                           "name": "TypeReference",
-                           "content": "void",
-                           "children": [],
+                           "name": "Literal",
+                           "content": ""a maior ou igual a 2"",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "String",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.lang",
+                                 "children": [],
+                              }],
+                           }],
                         }],
                      },
                      {
-                        "name": "Literal",
-                        "content": ""Hello"",
-                        "code": "(/Users/Eduardo Reis/COMP/Comp/src/HelloWorld.java:6)",
+                        "name": "Invocation",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
                         "children": [
                         {
                            "name": "TypeReference",
-                           "content": "String",
+                           "content": "void",
+                           "children": [],
+                        },
+                        {
+                           "name": "FieldRead",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
                            "children": [
                            {
-                              "name": "PackageReference",
-                              "content": "java.lang",
+                              "name": "TypeReference",
+                              "content": "PrintStream",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.io",
+                                 "children": [],
+                              }],
+                           },
+                           {
+                              "name": "FieldReference",
+                              "content": "out",
+                              "children": [
+                              {
+                                 "name": "TypeReference",
+                                 "content": "System",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.lang",
+                                    "children": [],
+                                 }],
+                              },
+                              {
+                                 "name": "TypeReference",
+                                 "content": "PrintStream",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.io",
+                                    "children": [],
+                                 }],
+                              }],
+                           }],
+                        },
+                        {
+                           "name": "ExecutableReference",
+                           "content": "println",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "PrintStream",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.io",
+                                 "children": [],
+                              }],
+                           },
+                           {
+                              "name": "TypeReference",
+                              "content": "void",
                               "children": [],
+                           }],
+                        },
+                        {
+                           "name": "Literal",
+                           "content": ""a menor que 2"",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "String",
+                              "children": [
+                              {
+                                 "name": "PackageReference",
+                                 "content": "java.lang",
+                                 "children": [],
+                              }],
                            }],
                         }],
                      }],

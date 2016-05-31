@@ -146,7 +146,7 @@ class SimpleNode implements Node {
 				}
 				if(n.name!=null){
 					if(n.name.equals("\"Method\"")){
-						if(n.content.equals("\"main\"")){
+						if(n.content.equals("\"main\"")){ //para o caso do main
 							SimpleNode c = (SimpleNode)n.children[0];
 							foundmain = true;
 
@@ -169,8 +169,8 @@ class SimpleNode implements Node {
 
 									if(j == n.children.length - 2){
 										mainSentence += ")\"";
-										//writer.print(mainSentence);
 										order.add(mainSentence);
+										writer.print(order.get(0));
 										break;
 									}
 									else {
@@ -188,29 +188,30 @@ class SimpleNode implements Node {
 									SimpleNode cc = (SimpleNode)c.children[0];
 									if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
 										variable += "\"" + removeQuotationMarks(cc.content) + " " + removeQuotationMarks(c.content);
-									
+
 									else if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
 										SimpleNode ccc = (SimpleNode)cc.children[0];
 										variable += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
 									}
-									
+
 									if(c.children.length == 1){
 										variable += (";");
 									}
 									else{									//rever este else mais tarde
 										cc = (SimpleNode)c.children[1];
 										if(cc.name.equals("\"Literal\"")){
-										variable += " = " + removeQuotationMarks(cc.content) + ";" + "\"";
+											variable += " = " + removeQuotationMarks(cc.content) + ";" + "\"";
 										}
 									}
-									writer.println(order.get(0) + " -> " + variable);
+									writer.print(" -> " + variable);
 									order.add(variable);
 								}
-								if(c.name.equals("\"If\""))
+								if(c.name.equals("\"If\"")) 
 								{
-									String ifSentence = null;
+									//CONDICAO
+									String ifCondition = null;
 									SimpleNode cc = (SimpleNode)c.children[0];
-									if(cc.name.equals("\"BinaryOperator\""))
+									if(cc.name.equals("\"BinaryOperator\""))	//IF DO TIPO if(a operador b)
 									{
 										String binaryOperator = (String) cc.content;
 										String compare1 = null;
@@ -235,13 +236,16 @@ class SimpleNode implements Node {
 										{
 											compare2 = (String) ccc.content;
 										}
-										ifSentence = "\"If(" + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + ")\"";	
-										order.add(ifSentence);
-										writer.println(order.get(1) + " -> " + ifSentence);
+										ifCondition = "\"If(" + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + ")\"";	
+										writer.println(" -> " + ifCondition);
 									}
-									if(c.children.length > 0)
-									{
-										cc = (SimpleNode)c.children[1];
+									//CONDICIONADOS
+
+									cc = (SimpleNode)c.children[1];				//CONDICIONADO TRUE
+									String lastLine = "";			//*ultima linha para ser adicionado ao arraylist*
+									writer.print(ifCondition);
+									//for(int l = 0; l < cc.children.length; l++)		//*nao sei se o for se mete aqui*
+									//{
 										if(cc.name.equals("\"Invocation\""))
 										{
 											SimpleNode ccc = (SimpleNode)cc.children[2];
@@ -250,14 +254,20 @@ class SimpleNode implements Node {
 												if(ccc.content.equals("\"println\""))
 												{
 													ccc = (SimpleNode)cc.children[3];
-													writer.println(ifSentence + " -> " + "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(ccc.content))+ "\\" + "\"" + ");" + "\"" + "[label=\"true\"]");
+													lastLine = " -> " + "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(ccc.content))+ "\\" + "\"" + ");" + "\"" + "[label=\"true\"]";
+													writer.println(lastLine);
+													//writer.print(lastLine);
 												}
 											}
 										}
-									}
+										//if(l == (cc.children.length - 1)){
+										//	writer.println("[label=\"true\"]");
+										//}
+									//}
+
 									if(c.children.length > 1)
 									{
-										cc = (SimpleNode)c.children[2];
+										cc = (SimpleNode)c.children[2];			//CONDICIONADO FALSE(caso exista)
 										if(cc.name.equals("\"Invocation\""))
 										{
 											SimpleNode ccc = (SimpleNode)cc.children[2];
@@ -266,7 +276,7 @@ class SimpleNode implements Node {
 												if(ccc.content.equals("\"println\""))
 												{
 													ccc = (SimpleNode)cc.children[3];
-													writer.println(ifSentence + " -> " + "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(ccc.content))+ "\\" + "\"" + ");" + "\"" + "[label=\"false\"]");
+													writer.println(ifCondition + " -> " + "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(ccc.content))+ "\\" + "\"" + ");" + "\"" + "[label=\"false\"]");
 												}
 											}
 										}
@@ -291,7 +301,7 @@ class SimpleNode implements Node {
 		String operation1 = ((String) content2).substring(1, ((String) content2).length() - 1);
 		return operation1;
 	}
-	
+
 	private void analyzeblock(SimpleNode n) {
 		// TODO Auto-generated method stub
 

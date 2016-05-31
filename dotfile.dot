@@ -1,6 +1,5 @@
 digraph graphname{
-"void main(String[] args)" -> "int a = 2;"
-"int a = 2;" -> "If(a>2)"
+"void main(String[] args)" -> "int a = 2;" -> "If(a>2)"
 "If(a>2)" -> "System.out.println(\"a maior ou igual a 2\");"[label="true"]
 "If(a>2)" -> "System.out.println(\"a menor que 2\");"[label="false"]
 }

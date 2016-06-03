@@ -187,18 +187,6 @@ class SimpleNode implements Node {
 							for(int k = 0; k < block.children.length; k++)
 							{
 								c = (SimpleNode)block.children[k];
-								if(c.name.equals("\"LocalVariable\""))
-								{
-									String variable = "";
-									SimpleNode cc = (SimpleNode)c.children[0];
-									if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
-										variable += "\"" + removeQuotationMarks(cc.content) + " " + removeQuotationMarks(c.content);
-
-									else if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
-										SimpleNode ccc = (SimpleNode)cc.children[0];
-										variable += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
-									}
-									System.out.println(variable);
 
 									if(c.children.length == 1){
 										variable += (";");
@@ -232,6 +220,9 @@ class SimpleNode implements Node {
 									order.add(variable);
 									System.out.println(variable);
 								}
+
+								////////////////////////////////////////// BEGIN IF
+
 								if(c.name.equals("\"If\"")) 
 								{
 									//CONDICAO
@@ -266,47 +257,55 @@ class SimpleNode implements Node {
 										writer.println(" -> " + ifCondition);
 									}
 									//CONDICIONADOS
-
-									cc = (SimpleNode)c.children[1];				//CONDICIONADO TRUE
+									ArrayList<String> lastConditioned = new ArrayList<String> ();
 									String lastLine = "";			//*ultima linha para ser adicionado ao arraylist*
+									cc = (SimpleNode)c.children[1];			//CONDICIONADO TRUE
 									writer.print(ifCondition);
-									//for(int l = 0; l < cc.children.length; l++)		//*nao sei se o for se mete aqui*
-									//{
-										if(cc.name.equals("\"Invocation\""))
+									if(cc.name.equals("\"Block\"")){	//caso seja um block
+										for(int l = 0; l < cc.children.length; l++)		
 										{
-											SimpleNode ccc = (SimpleNode)cc.children[2];
-											if(ccc.name.equals("\"ExecutableReference\""))
-											{
-												if(ccc.content.equals("\"println\""))
-												{
-													ccc = (SimpleNode)cc.children[3];
-													lastLine = " -> " + "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(ccc.content))+ "\\" + "\"" + ");" + "\"" + "[label=\"true\"]";
-													writer.println(lastLine);
-													//writer.print(lastLine);
-												}
+											SimpleNode ccc = (SimpleNode)cc.children[l];
+
+											lastLine = " -> " + analyzeLine(cc);
+											writer.print(lastLine);
+
+											if(l == (cc.children.length - 1)){
+												lastConditioned.add(lastLine);
+												writer.println("[label=\"true\"]");
 											}
 										}
-										//if(l == (cc.children.length - 1)){
-										//	writer.println("[label=\"true\"]");
-										//}
-									//}
+									}
+									else{								//caso seja uma linha so
+										writer.println(" -> " + analyzeLine(cc) + "[label=\"true\"]");
+									}
 
 									if(c.children.length > 1)
 									{
 										cc = (SimpleNode)c.children[2];			//CONDICIONADO FALSE(caso exista)
-										if(cc.name.equals("\"Invocation\""))
-										{
-											SimpleNode ccc = (SimpleNode)cc.children[2];
-											if(ccc.name.equals("\"ExecutableReference\""))
+										writer.print(ifCondition);
+										if(cc.name.equals("\"Block\"")){	//caso seja um bloco
+											for(int l = 0; l < cc.children.length; l++)	
 											{
-												if(ccc.content.equals("\"println\""))
-												{
-													ccc = (SimpleNode)cc.children[3];
-													writer.println(ifCondition + " -> " + "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(ccc.content))+ "\\" + "\"" + ");" + "\"" + "[label=\"false\"]");
+												SimpleNode ccc = (SimpleNode)cc.children[l];
+
+												lastLine = " -> " + analyzeLine(cc);
+												writer.print(lastLine);
+
+												if(l == (cc.children.length - 1)){
+													lastConditioned.add(lastLine);
+													writer.println("[label=\"false\"]");
 												}
 											}
 										}
+										else{								//caso seja uma linha so
+											writer.println(" -> " + analyzeLine(cc) + "[label=\"false\"]");
+										}
 									}			
+								}
+								//////////////////////////////////////////END IF
+								
+								else{ 	//imprimte tudo que nao é ifs, fors e whiles
+									writer.print( " -> " +analyzeLine(c));
 								}
 							}
 						}
@@ -339,6 +338,48 @@ class SimpleNode implements Node {
 				e.analyzeblock(e);
 			}
 		}
+	}
+
+	private String analyzeLine(SimpleNode c){
+		String str = "";
+
+		/////////////////////////////////////////////////////// int a = 1;
+		if(c.name.equals("\"LocalVariable\""))
+		{
+			SimpleNode cc = (SimpleNode)c.children[0];
+			if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
+				str += "\"" + removeQuotationMarks(cc.content) + " " + removeQuotationMarks(c.content);
+
+			else if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
+				SimpleNode ccc = (SimpleNode)cc.children[0];
+				str += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
+			}
+
+			if(c.children.length == 1){
+				str += (";");
+			}
+			else{									//rever este else mais tarde
+				cc = (SimpleNode)c.children[1];
+				if(cc.name.equals("\"Literal\"")){
+					str += " = " + removeQuotationMarks(cc.content) + ";" + "\"";
+				}
+			}
+			return str;
+		}
+		///////////////////////////////////////////////////////
+		if(c.name.equals("\"Invocation\""))
+		{
+			SimpleNode cc = (SimpleNode)c.children[2];
+			if(cc.name.equals("\"ExecutableReference\""))
+			{
+				if(cc.content.equals("\"println\""))
+				{
+					cc = (SimpleNode)c.children[3];
+					str = "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(cc.content))+ "\\" + "\"" + ");" + "\"";
+				}
+			}
+		}
+		return str;
 	}
 }
 

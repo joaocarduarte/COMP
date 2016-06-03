@@ -49,15 +49,19 @@ public interface ExampleParserConstants {
   /** RegularExpression Id. */
   int SPACE = 26;
   /** RegularExpression Id. */
-  int STRING_NAME = 27;
+  int ARRAY = 27;
   /** RegularExpression Id. */
-  int STRING_CONTENT = 28;
+  int PACKAGE = 28;
   /** RegularExpression Id. */
-  int STRING_CODE = 29;
+  int STRING_NAME = 29;
   /** RegularExpression Id. */
-  int QUOTED_STRING = 30;
+  int STRING_CONTENT = 30;
   /** RegularExpression Id. */
-  int SINGLE_QUOTED_STRING = 31;
+  int STRING_CODE = 31;
+  /** RegularExpression Id. */
+  int QUOTED_STRING = 32;
+  /** RegularExpression Id. */
+  int SINGLE_QUOTED_STRING = 33;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -91,6 +95,8 @@ public interface ExampleParserConstants {
     "<DIGIT>",
     "<LETTER>",
     "<SPACE>",
+    "<ARRAY>",
+    "<PACKAGE>",
     "<STRING_NAME>",
     "<STRING_CONTENT>",
     "<STRING_CODE>",

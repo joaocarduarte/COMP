@@ -64,13 +64,19 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
         case STRING_NAME:
           t = jj_consume_token(STRING_NAME);
           break;
+        case ARRAY:
+          t = jj_consume_token(ARRAY);
+          break;
+        case PACKAGE:
+          t = jj_consume_token(PACKAGE);
+          break;
         default:
           jj_la1[0] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
         jj_consume_token(O_COMMA);
-                                                                               jjtn000.content = t.image;
+                                                                                                           jjtn000.content = t.image;
         break;
       default:
         jj_la1[1] = jj_gen;
@@ -148,11 +154,16 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
   static private int jj_gen;
   static final private int[] jj_la1 = new int[5];
   static private int[] jj_la1_0;
+  static private int[] jj_la1_1;
   static {
       jj_la1_init_0();
+      jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x18000000,0x200,0x400,0x800,0x8000,};
+      jj_la1_0 = new int[] {0x78000000,0x200,0x400,0x800,0x8000,};
+   }
+   private static void jj_la1_init_1() {
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -293,7 +304,7 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[32];
+    boolean[] la1tokens = new boolean[34];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -304,10 +315,13 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
           if ((jj_la1_0[i] & (1<<j)) != 0) {
             la1tokens[j] = true;
           }
+          if ((jj_la1_1[i] & (1<<j)) != 0) {
+            la1tokens[32+j] = true;
+          }
         }
       }
     }
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 34; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

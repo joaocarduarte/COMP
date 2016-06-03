@@ -162,11 +162,15 @@ class SimpleNode implements Node {
 									if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
 										mainSentence += removeQuotationMarks(cc.content) + " " + removeQuotationMarks(c.content);
 
+										System.out.println(mainSentence);
+
 									if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
 										SimpleNode ccc = (SimpleNode)cc.children[0];
 										mainSentence += removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
 									}
 
+									System.out.println(mainSentence);
+									
 									if(j == n.children.length - 2){
 										mainSentence += ")\"";
 										order.add(mainSentence);
@@ -176,6 +180,7 @@ class SimpleNode implements Node {
 									else {
 										mainSentence += ", ";
 									}
+									System.out.println(mainSentence);
 								}			
 							}
 							SimpleNode block = (SimpleNode)n.children[n.children.length-1];
@@ -193,18 +198,39 @@ class SimpleNode implements Node {
 										SimpleNode ccc = (SimpleNode)cc.children[0];
 										variable += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
 									}
+									System.out.println(variable);
 
 									if(c.children.length == 1){
 										variable += (";");
 									}
 									else{									//rever este else mais tarde
 										cc = (SimpleNode)c.children[1];
+										System.out.println(cc.name);
 										if(cc.name.equals("\"Literal\"")){
 											variable += " = " + removeQuotationMarks(cc.content) + ";" + "\"";
+										}
+										else if(cc.name.equals("\"NewArray\"")){
+											variable += " = {";
+											
+											for(int i2 = 1;i2< cc.children.length;i2++){
+												if(i2==1){
+												SimpleNode arraycontent = (SimpleNode) cc.children[i2];
+												
+												variable += removeQuotationMarks(arraycontent.content);
+												}
+												else{
+													SimpleNode arraycontent = (SimpleNode) cc.children[i2];
+													
+													variable += ","+removeQuotationMarks(arraycontent.content);
+												}
+											}
+							
+											variable += "};" + "\"";
 										}
 									}
 									writer.print(" -> " + variable);
 									order.add(variable);
+									System.out.println(variable);
 								}
 								if(c.name.equals("\"If\"")) 
 								{
@@ -309,7 +335,7 @@ class SimpleNode implements Node {
 			for(int i=0;i< n.children.length; ++i) {
 				SimpleNode e = (SimpleNode)n.children[i];
 				SimpleNode p = (SimpleNode)e.parent;
-				System.out.println(e.name);
+			//	System.out.println(e.name);
 				e.analyzeblock(e);
 			}
 		}

@@ -6,6 +6,7 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
         SimpleNode root = parser.start();
         //root.dump("");
         root.printstuff("");
+        root.showGraph();
       }
 
   static final public SimpleNode start() throws ParseException {

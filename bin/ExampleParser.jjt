@@ -13,6 +13,7 @@ public class ExampleParser {
         SimpleNode root = parser.start();
         //root.dump("");
         root.printstuff("");
+        root.showGraph();
       }
 }
 
@@ -68,9 +69,11 @@ TOKEN: {
 
 //Strings
 TOKEN: {
-   <STRING_NAME: <O_QUOTATIONMARKS> (<LETTER>)+ <O_QUOTATIONMARKS> >
+   <ARRAY: <O_QUOTATIONMARKS> (<LETTER>)+ (":") (<LETTER>)+ <O_QUOTATIONMARKS> >
+| < PACKAGE: <O_QUOTATIONMARKS> (<LETTER>)+ (".") (<LETTER>)+ <O_OPENPARENTHESIS> <O_CLOSEPARENTHESIS> <O_QUOTATIONMARKS> >    
+|    <STRING_NAME: <O_QUOTATIONMARKS> (<LETTER>)+ <O_QUOTATIONMARKS> >
 |  <STRING_CONTENT: <O_QUOTATIONMARKS> (("<")? ((<LETTER> | <DIGIT> )* (<O_OPENPARENTHESIS>)? (<SPACE> (<LETTER> | <DIGIT>)*)? (<O_CLOSEPARENTHESIS>)? (">")? (<O_DOT>)? (<LETTER>)*  | <QUOTED_STRING> )
-| ("==") | ("_++") | ("_--")
+| ("==") | ("_++") | ("_--") | ("+")
 ) <O_QUOTATIONMARKS> >
 
 
@@ -91,7 +94,7 @@ SimpleNode start() : {} {
 void expr1() #NODE : {Token t;} {
 	
   <O_OPENBRACE> <NAME> <O_COLON> t = <STRING_NAME> <O_COMMA> {jjtThis.name = t.image;}
-  (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME>)  <O_COMMA> {jjtThis.content = t.image;})?
+  (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME> | t=<ARRAY> | t=< PACKAGE >)  <O_COMMA> {jjtThis.content = t.image;})?
   (<CODE> <O_COLON> t = <STRING_CODE> <O_COMMA> {jjtThis.code = t.image;})?  <CHILDREN> <O_COLON> <O_OPENBRACKET> (expr1())? (<O_COMMA> expr1())* <O_CLOSEBRACKET> <O_COMMA>  <O_CLOSEBRACE>
   
 }

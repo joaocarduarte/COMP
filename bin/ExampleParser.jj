@@ -17,6 +17,7 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
         SimpleNode root = parser.start();
         //root.dump("");
         root.printstuff("");
+        root.showGraph();
       }
 }
 
@@ -72,9 +73,11 @@ TOKEN: {
 
 //Strings
 TOKEN: {
-   <STRING_NAME: <O_QUOTATIONMARKS> (<LETTER>)+ <O_QUOTATIONMARKS> >
+   <ARRAY: <O_QUOTATIONMARKS> (<LETTER>)+ (":") (<LETTER>)+ <O_QUOTATIONMARKS> >
+| < PACKAGE: <O_QUOTATIONMARKS> (<LETTER>)+ (".") (<LETTER>)+ <O_OPENPARENTHESIS> <O_CLOSEPARENTHESIS> <O_QUOTATIONMARKS> >    
+|    <STRING_NAME: <O_QUOTATIONMARKS> (<LETTER>)+ <O_QUOTATIONMARKS> >
 |  <STRING_CONTENT: <O_QUOTATIONMARKS> (("<")? ((<LETTER> | <DIGIT> )* (<O_OPENPARENTHESIS>)? (<SPACE> (<LETTER> | <DIGIT>)*)? (<O_CLOSEPARENTHESIS>)? (">")? (<O_DOT>)? (<LETTER>)*  | <QUOTED_STRING> )
-| ("==") | ("_++") | ("_--")
+| ("==") | ("_++") | ("_--") | ("+")
 ) <O_QUOTATIONMARKS> >
 
 
@@ -132,7 +135,7 @@ void expr1()       : {/*@bgen(jjtree) NODE */
 /*@egen*/
 	
   <O_OPENBRACE> <NAME> <O_COLON> t = <STRING_NAME> <O_COMMA> {jjtn000.name = t.image;}
-  (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME>)  <O_COMMA> {jjtn000.content = t.image;})?
+  (<CONTENT> <O_COLON>  (t = <STRING_CONTENT> | t = <STRING_NAME> | t=<ARRAY> | t=< PACKAGE >)  <O_COMMA> {jjtn000.content = t.image;})?
   (<CODE> <O_COLON> t = <STRING_CODE> <O_COMMA> {jjtn000.code = t.image;})?  <CHILDREN> <O_COLON> <O_OPENBRACKET> (expr1())? (<O_COMMA> expr1())* <O_CLOSEBRACKET> <O_COMMA>  <O_CLOSEBRACE>/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {

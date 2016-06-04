@@ -17,6 +17,7 @@ public class ExampleParser/*@bgen(jjtree)*/implements ExampleParserTreeConstants
         SimpleNode root = parser.start();
         //root.dump("");
         root.printstuff("");
+        root.showGraph();
       }
 }
 
@@ -76,7 +77,7 @@ TOKEN: {
 | < PACKAGE: <O_QUOTATIONMARKS> (<LETTER>)+ (".") (<LETTER>)+ <O_OPENPARENTHESIS> <O_CLOSEPARENTHESIS> <O_QUOTATIONMARKS> >    
 |    <STRING_NAME: <O_QUOTATIONMARKS> (<LETTER>)+ <O_QUOTATIONMARKS> >
 |  <STRING_CONTENT: <O_QUOTATIONMARKS> (("<")? ((<LETTER> | <DIGIT> )* (<O_OPENPARENTHESIS>)? (<SPACE> (<LETTER> | <DIGIT>)*)? (<O_CLOSEPARENTHESIS>)? (">")? (<O_DOT>)? (<LETTER>)*  | <QUOTED_STRING> )
-| ("==") | ("_++") | ("_--")
+| ("==") | ("_++") | ("_--") | ("+")
 ) <O_QUOTATIONMARKS> >
 
 

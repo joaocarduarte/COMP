@@ -279,6 +279,7 @@ class SimpleNode implements Node {
 				if(l == (cc.children.length - 1)){
 					lastConditioned.add(lastLine);
 					writer.println("[label=\"true\"]");
+					writer.println(lastLine + " -> " + analyzeLine(after));
 				}
 			}
 		}
@@ -305,6 +306,7 @@ class SimpleNode implements Node {
 					if(l == (cc.children.length - 1)){
 						lastConditioned.add(lastLine);
 						writer.println("[label=\"false\"]");
+						writer.println(lastLine + " -> " + analyzeLine(after));
 					}
 				}
 			}

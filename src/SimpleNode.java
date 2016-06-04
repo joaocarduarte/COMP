@@ -223,16 +223,92 @@ class SimpleNode implements Node {
 			}
 			//////////////////////////////////////////END IF
 
+			//////////////////////////////////////////Begin While
+			else if(c.name.equals("\"While\"") && k + 1 < block.children.length)
+			{
+				analyzeWhile(c, writer, (SimpleNode)block.children[k+1]);
+				writer.print(analyzeLine((SimpleNode)block.children[k+1]));
+				k++;
+			}
+			else if(c.name.equals("\"While\""))
+			{
+				analyzeWhile(c, writer, (SimpleNode)block.children[k+1]);
+			}
 			else{ 	//imprime tudo que nao ï¿½ ifs, fors e whiles
 				writer.print( " -> " +analyzeLine(c));
 			}
 		}
 	}
 
+	private void analyzeWhile(SimpleNode c, PrintWriter writer, SimpleNode after) {
+		// TODO ver se after não é ciclo ou if
+
+		//ArrayList<String> lastConditioned = new ArrayList<String>();
+		//CONDICAO
+		String whileCondition = null;
+		SimpleNode cc = (SimpleNode)c.children[0];
+		if(cc.name.equals("\"BinaryOperator\""))	//IF DO TIPO if(a operador b)
+		{
+			String binaryOperator = (String) cc.content;
+			String compare1 = null;
+			String compare2 = null;
+			SimpleNode ccc = (SimpleNode)cc.children[1];
+			if(ccc.name.equals("\"VariableRead\""))
+			{
+				SimpleNode cccc = (SimpleNode)ccc.children[1];
+				compare1 = (String) cccc.content;
+			}	
+			else if(ccc.name.equals("\"Literal\""))
+			{
+				compare1 = (String) ccc.content;
+			}
+			ccc = (SimpleNode)cc.children[2];
+			if(ccc.name.equals("\"VariableRead\""))
+			{
+				SimpleNode cccc = (SimpleNode)ccc.children[1];
+				compare2 = (String) cccc.content;
+			}	
+			else if(ccc.name.equals("\"Literal\""))
+			{
+				compare2 = (String) ccc.content;
+			}
+			whileCondition = "\"While(" + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + ")\"";	
+			writer.println(" -> " + whileCondition);
+		}
+		//CONDICIONADOS
+		String lastLine = "";			//*ultima linha para ser adicionado ao arraylist*
+		cc = (SimpleNode)c.children[1];			//CONDICIONADO TRUE
+		writer.print(whileCondition);
+		if(cc.name.equals("\"Block\"")){	//caso seja um block
+			for(int l = 0; l < cc.children.length; l++)		
+			{
+				SimpleNode ccc = (SimpleNode)cc.children[l];
+
+				lastLine = analyzeLine(ccc);
+
+
+				if(l == (cc.children.length - 1)){
+					//lastConditioned.add(lastLine);
+					writer.println(" -> " + lastLine + " -> " + analyzeLine(after));
+					writer.println(lastLine + " -> " + whileCondition);
+				}
+				else
+					writer.print(" -> " + lastLine);
+			}
+		}
+		else{								//caso seja uma linha so -> ligar código dentro do if ao restante código do block
+			lastLine = analyzeLine(cc);
+			writer.print(" -> " + lastLine);
+			//lastConditioned.add(lastLine);
+			writer.println("[label=\"true\"]");
+			writer.println(lastLine + " -> " + analyzeLine(after));
+		}
+	}
+
 	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after) { // caso haja código depois do IF
 		//TODO ver se after não é ciclo ou if
-		
-		ArrayList<String> lastConditioned = new ArrayList<String>();
+
+		String lastConditioned = null;
 		//CONDICAO
 		String ifCondition = null;
 		SimpleNode cc = (SimpleNode)c.children[0];
@@ -273,25 +349,41 @@ class SimpleNode implements Node {
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[l];
 
-				lastLine = " -> " + analyzeLine(cc);
-				writer.print(lastLine);
+				lastLine = analyzeLine(ccc);
 
-				if(l == (cc.children.length - 1)){
-					lastConditioned.add(lastLine);
+				if(l == 0){
+					writer.print(" -> " + lastLine);
 					writer.println("[label=\"true\"]");
-					writer.println(lastLine + " -> " + analyzeLine(after));
+					lastConditioned = lastLine;
 				}
+				else if(l == 1)
+				{
+					if(l == (cc.children.length - 1))
+					{
+						writer.println(lastConditioned + " -> " + lastLine + "->" + analyzeLine(after));
+					}
+					else
+					{
+						writer.print(lastConditioned + " -> " + lastLine);
+						lastConditioned = null;
+					}					
+				}
+				else if(l == (cc.children.length - 1)){
+					writer.println("->" + lastLine + " -> " + analyzeLine(after));
+				}
+				else
+					writer.print(" -> " + lastLine);
 			}
 		}
 		else{								//caso seja uma linha so -> ligar código dentro do if ao restante código do block
 			lastLine = analyzeLine(cc);
 			writer.print(" -> " + lastLine);
-			lastConditioned.add(lastLine);
+			//lastConditioned.add(lastLine);
 			writer.println("[label=\"true\"]");
 			writer.println(lastLine + " -> " + analyzeLine(after));
 		}
 
-		if(c.children.length > 1)
+		if(c.children.length > 2)
 		{
 			cc = (SimpleNode)c.children[2];			//CONDICIONADO FALSE(caso exista)
 			writer.print(ifCondition);
@@ -300,25 +392,45 @@ class SimpleNode implements Node {
 				{
 					SimpleNode ccc = (SimpleNode)cc.children[l];
 
-					lastLine = " -> " + analyzeLine(cc);
-					writer.print(lastLine);
+					lastLine = analyzeLine(ccc);
 
-					if(l == (cc.children.length - 1)){
-						lastConditioned.add(lastLine);
+					if(l == 0){
+						writer.print(" -> " + lastLine);
 						writer.println("[label=\"false\"]");
-						writer.println(lastLine + " -> " + analyzeLine(after));
+						lastConditioned = lastLine;
 					}
+					else if(l == 1)
+					{
+						if(l == (cc.children.length - 1))
+						{
+							writer.println(lastConditioned + " -> " + lastLine + "->" + analyzeLine(after));
+						}
+						else
+						{
+							writer.print(lastConditioned + " -> " + lastLine);
+							lastConditioned = null;
+						}					
+					}
+					else if(l == (cc.children.length - 1)){
+						writer.println("->" + lastLine + " -> " + analyzeLine(after));
+					}
+					else
+						writer.print(" -> " + lastLine);
 				}
 			}
 			else{								//caso seja uma linha so
 				lastLine = analyzeLine(cc);
 				writer.print(" -> " + lastLine);
-				lastConditioned.add(lastLine);
+				//lastConditioned.add(lastLine);
 				writer.print("[label=\"false\"]");
 				writer.println(lastLine + " -> " + analyzeLine(after));
 			}
-		}	
-		
+		}
+		else ////////////////////////////////// Quando não há false, pode-se saltar o if
+		{
+			writer.println(ifCondition + " -> " + analyzeLine(after) + "[label=\"false\"]");
+		}
+
 	}
 
 	private void analyzeIf(SimpleNode c, PrintWriter writer) {
@@ -408,7 +520,7 @@ class SimpleNode implements Node {
 
 	private String analyzeLine(SimpleNode c){
 		String str = "";
-	
+
 		/////////////////////////////////////////////////////// int a = 1;
 		if(c.name.equals("\"LocalVariable\""))
 		{
@@ -454,7 +566,7 @@ class SimpleNode implements Node {
 					{
 						compare2 = (String) ccc.content;
 					}
-					
+
 					str += " = " + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + "\"";
 				}
 				else if(cc.name.equals("\"NewArray\"")){
@@ -497,7 +609,8 @@ class SimpleNode implements Node {
 				}
 			}
 		}
-		if(c.name.equals("\"Assignment\"")) // mudar valor variável
+		//////////////////////////////////////////// mudar valor variável
+		if(c.name.equals("\"Assignment\""))
 		{
 			str += "\"";
 			SimpleNode cc = (SimpleNode)c.children[1];
@@ -517,23 +630,38 @@ class SimpleNode implements Node {
 			str += "\"";
 			return str;
 		}
+
+		////////////////////////////////////////// operador do tipo _++
+		if(c.name.equals("\"UnaryOperator\""))
+		{
+			String operator = (String) c.content;
+			SimpleNode cc = (SimpleNode) c.children[1];
+			if(cc.name.equals("\"VariableRead\""))
+			{
+				SimpleNode ccc = (SimpleNode) cc.children[1];
+				if(ccc.name.equals("\"LocalVariableReference\""))
+				{
+					str += "\"" + removeQuotationMarks(ccc.content) + (removeQuotationMarks(operator)).substring(1, removeQuotationMarks(operator).length()) + "\"";
+				}
+			}
+		}
 		return str;
 	}
-	
+
 	public void showGraph()
 	{
 		GraphViz gv = new GraphViz();
 		String input = "dotfile.dot";
 		gv.readSource(input);
-		
+
 		String type = "png";
-				
+
 		File out = new File("output." + type); 
-				
+
 		gv.writeGraphToFile( gv.getGraph(gv.getDotSource(), type), out );
-		
+
 		Desktop dt = Desktop.getDesktop();
-	    try {
+		try {
 			dt.open(out);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

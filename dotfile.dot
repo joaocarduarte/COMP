@@ -1,6 +1,7 @@
 digraph graphname{
-"void main(String[] args)" -> "int a = 2;" -> "If(a>2)"
-"If(a>2)" -> "a = 3"[label="true"]
-"a = 3" -> "int b = 2;"
-"If(a>2)" -> "a = 1"[label="false"]"a = 1" -> "int b = 2;"
+"void main(String[] args)" -> "int a = 2;" -> "If(a<4)"
+"If(a<4)" -> "System.out.println(\"Still doing\");"[label="true"]
+"System.out.println(\"Still doing\");" -> "a++"->"System.out.println(\"Cenas\");" -> "int b = 2;"
+"If(a<4)" -> "int d = 2;"[label="false"]
+"int d = 2;" -> "System.out.println(\"Cenas 2\");"->"int b = 2;"
 "int b = 2;" -> "int c = b+a" -> "System.out.println(c);"}

@@ -77,7 +77,7 @@ class SimpleNode implements Node {
      out its children. */
 
 	public void dump(String prefix) {
-		System.out.println(toString(prefix) + name);
+	//	System.out.println(toString(prefix) + name);
 		if (children != null) {
 			for (int i = 0; i < children.length; ++i) {
 				SimpleNode n = (SimpleNode)children[i];
@@ -252,12 +252,12 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeFor(SimpleNode c, PrintWriter writer) { // For sem código à frente
+	private void analyzeFor(SimpleNode c, PrintWriter writer) { // For sem cï¿½digo ï¿½ frente
 
-		// TODO ver se after não é ciclo ou if
+		// TODO ver se after nï¿½o ï¿½ ciclo ou if
 
 		String forCondition = null;
-		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condições
+		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condiï¿½ï¿½es
 		SimpleNode cc = (SimpleNode)c.children[0];
 		if(cc.name.equals("\"LocalVariable\""))	//FOR
 		{
@@ -338,11 +338,11 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeFor(SimpleNode c, PrintWriter writer, SimpleNode after) { // For com código à frente
-		// TODO ver se after não é ciclo ou if
+	private void analyzeFor(SimpleNode c, PrintWriter writer, SimpleNode after) { // For com cï¿½digo ï¿½ frente
+		// TODO ver se after nï¿½o ï¿½ ciclo ou if
 
 		String forCondition = null;
-		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condições
+		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condiï¿½ï¿½es
 		SimpleNode cc = (SimpleNode)c.children[0];
 		if(cc.name.equals("\"LocalVariable\""))	//FOR
 		{
@@ -425,7 +425,7 @@ class SimpleNode implements Node {
 
 	private void analyzeWhile(SimpleNode c, PrintWriter writer)
 	{
-		// TODO ver se after não é ciclo ou if
+		// TODO ver se after nï¿½o ï¿½ ciclo ou if
 
 		//ArrayList<String> lastConditioned = new ArrayList<String>();
 		//CONDICAO
@@ -483,7 +483,7 @@ class SimpleNode implements Node {
 	}
 
 	private void analyzeWhile(SimpleNode c, PrintWriter writer, SimpleNode after) {
-		// TODO ver se after não é ciclo ou if
+		// TODO ver se after nï¿½o ï¿½ ciclo ou if
 
 		//ArrayList<String> lastConditioned = new ArrayList<String>();
 		//CONDICAO
@@ -540,8 +540,8 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after) { // caso haja código depois do IF
-		//TODO ver se after não é ciclo ou if
+	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after) { // caso haja cï¿½digo depois do IF
+		//TODO ver se after nï¿½o ï¿½ ciclo ou if
 
 		String lastConditioned = null;
 		//CONDICAO
@@ -619,7 +619,7 @@ class SimpleNode implements Node {
 					writer.print(" -> " + lastLine);
 			}
 		}
-		else{								//caso seja uma linha so -> ligar código dentro do if ao restante código do block
+		else{								//caso seja uma linha so -> ligar cï¿½digo dentro do if ao restante cï¿½digo do block
 			lastLine = analyzeLine(cc);
 			writer.print(" -> " + lastLine);
 			//lastConditioned.add(lastLine);
@@ -679,7 +679,7 @@ class SimpleNode implements Node {
 				writer.println(lastLine + " -> " + analyzeLine(after));
 			}
 		}
-		else ////////////////////////////////// Quando não há false, pode-se saltar o if
+		else ////////////////////////////////// Quando nï¿½o hï¿½ false, pode-se saltar o if
 		{
 			writer.println(ifCondition + " -> " + analyzeLine(after) + "[label=\"false\"]");
 		}
@@ -792,7 +792,10 @@ class SimpleNode implements Node {
 			else{									//rever este else mais tarde
 				cc = (SimpleNode)c.children[1];
 				if(cc.name.equals("\"Literal\"")){
-					str += " = " + removeQuotationMarks(cc.content) + ";" + "\"";
+					String temp = " = " + removeQuotationMarks(cc.content);
+					temp = temp.replaceAll("\"", "\\\\\"");
+					temp += ";" + "\"";	
+					str = str + temp;
 				}
 				else if(cc.name.equals("\"BinaryOperator\""))
 				{
@@ -819,24 +822,33 @@ class SimpleNode implements Node {
 					{
 						compare2 = (String) ccc.content;
 					}
-
-					str += " = " + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + "\"";
+				
+						str += " = " + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + "\"";
+					
 				}
 				else if(cc.name.equals("\"NewArray\"")){
-					str += " = {";
+					String temp2 = "";
+					temp2 += "= {";
 					for(int i2 = 1;i2< cc.children.length;i2++){
 						if(i2==1){
 							SimpleNode arraycontent = (SimpleNode) cc.children[i2];
-							str += removeQuotationMarks(arraycontent.content);
+							temp2 += removeQuotationMarks(arraycontent.content);
+							
+						
 						}
 						else{
 							SimpleNode arraycontent = (SimpleNode) cc.children[i2];
 
-							str += ","+removeQuotationMarks(arraycontent.content);
+							temp2 += ","+ removeQuotationMarks(arraycontent.content);
+						
 						}
+						
 					}
-
-					str += "};" + "\"";
+					
+					temp2 = temp2.replaceAll("\"", "\\\\\"");
+					temp2 += "};" + "\"";
+					str = str + temp2;
+					System.out.println(str);
 				}
 
 			}
@@ -851,7 +863,7 @@ class SimpleNode implements Node {
 				if(cc.content.equals("\"println\"")) 
 				{
 					cc = (SimpleNode)c.children[3];
-					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma variável ou texto(else)
+					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma variï¿½vel ou texto(else)
 					{
 						SimpleNode ccc = (SimpleNode)cc.children[1];
 						str = "\"System.out.println(" + removeQuotationMarks(ccc.content) + ");" + "\"";
@@ -878,13 +890,15 @@ class SimpleNode implements Node {
 								str += removeQuotationMarks(ccc.content);
 							else
 								str += ", " + removeQuotationMarks(ccc.content);
+							
+		
 						}
 					}
 				}
 				return str += ") \"";
 			}
 		}
-		//////////////////////////////////////////// mudar valor variável
+		//////////////////////////////////////////// mudar valor variï¿½vel
 		if(c.name.equals("\"Assignment\""))
 		{
 			str += "\"";

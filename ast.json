@@ -67,6 +67,73 @@
             },
             {
                "name": "Method",
+               "content": "change",
+               "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:27)",
+               "children": [
+               {
+                  "name": "TypeReference",
+                  "content": "void",
+                  "children": [],
+               },
+               {
+                  "name": "Parameter",
+                  "content": "a",
+                  "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:27)",
+                  "children": [
+                  {
+                     "name": "TypeReference",
+                     "content": "int",
+                     "children": [],
+                  }],
+               },
+               {
+                  "name": "Block",
+                  "children": [
+                  {
+                     "name": "Assignment",
+                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:29)",
+                     "children": [
+                     {
+                        "name": "TypeReference",
+                        "content": "int",
+                        "children": [],
+                     },
+                     {
+                        "name": "VariableWrite",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:29)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        },
+                        {
+                           "name": "ParameterReference",
+                           "content": "a",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           }],
+                        }],
+                     },
+                     {
+                        "name": "Literal",
+                        "content": "3",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:29)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        }],
+                     }],
+                  }],
+               }],
+            },
+            {
+               "name": "Method",
                "content": "main",
                "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:5)",
                "children": [
@@ -122,12 +189,84 @@
                      }],
                   },
                   {
-                     "name": "If",
+                     "name": "Invocation",
+                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
                      "children": [
+                     {
+                        "name": "TypeReference",
+                        "content": "void",
+                        "children": [],
+                     },
+                     {
+                        "name": "ExecutableReference",
+                        "content": "change",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "Main",
+                           "children": [
+                           {
+                              "name": "PackageReference",
+                              "content": "main",
+                              "children": [],
+                           }],
+                        },
+                        {
+                           "name": "TypeReference",
+                           "content": "void",
+                           "children": [],
+                        }],
+                     },
+                     {
+                        "name": "VariableRead",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        },
+                        {
+                           "name": "LocalVariableReference",
+                           "content": "a",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           }],
+                        }],
+                     }],
+                  },
+                  {
+                     "name": "For",
+                     "children": [
+                     {
+                        "name": "LocalVariable",
+                        "content": "i",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        },
+                        {
+                           "name": "Literal",
+                           "content": "0",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           }],
+                        }],
+                     },
                      {
                         "name": "BinaryOperator",
                         "content": "<",
-                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
                         "children": [
                         {
                            "name": "TypeReference",
@@ -136,7 +275,7 @@
                         },
                         {
                            "name": "VariableRead",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
                            "children": [
                            {
                               "name": "TypeReference",
@@ -145,7 +284,7 @@
                            },
                            {
                               "name": "LocalVariableReference",
-                              "content": "a",
+                              "content": "i",
                               "children": [
                               {
                                  "name": "TypeReference",
@@ -156,8 +295,8 @@
                         },
                         {
                            "name": "Literal",
-                           "content": "4",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:8)",
+                           "content": "2",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
                            "children": [
                            {
                               "name": "TypeReference",
@@ -167,11 +306,42 @@
                         }],
                      },
                      {
+                        "name": "UnaryOperator",
+                        "content": "_++",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        },
+                        {
+                           "name": "VariableRead",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:9)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           },
+                           {
+                              "name": "LocalVariableReference",
+                              "content": "i",
+                              "children": [
+                              {
+                                 "name": "TypeReference",
+                                 "content": "int",
+                                 "children": [],
+                              }],
+                           }],
+                        }],
+                     },
+                     {
                         "name": "Block",
                         "children": [
                         {
                            "name": "Invocation",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:10)",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
                            "children": [
                            {
                               "name": "TypeReference",
@@ -180,7 +350,7 @@
                            },
                            {
                               "name": "FieldRead",
-                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:10)",
+                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
                               "children": [
                               {
                                  "name": "TypeReference",
@@ -240,8 +410,8 @@
                            },
                            {
                               "name": "Literal",
-                              "content": ""Still doing"",
-                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:10)",
+                              "content": ""Cenas"",
+                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
                               "children": [
                               {
                                  "name": "TypeReference",
@@ -250,37 +420,6 @@
                                  {
                                     "name": "PackageReference",
                                     "content": "java.lang",
-                                    "children": [],
-                                 }],
-                              }],
-                           }],
-                        },
-                        {
-                           "name": "UnaryOperator",
-                           "content": "_++",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
-                           "children": [
-                           {
-                              "name": "TypeReference",
-                              "content": "int",
-                              "children": [],
-                           },
-                           {
-                              "name": "VariableRead",
-                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:11)",
-                              "children": [
-                              {
-                                 "name": "TypeReference",
-                                 "content": "int",
-                                 "children": [],
-                              },
-                              {
-                                 "name": "LocalVariableReference",
-                                 "content": "a",
-                                 "children": [
-                                 {
-                                    "name": "TypeReference",
-                                    "content": "int",
                                     "children": [],
                                  }],
                               }],
@@ -357,7 +496,7 @@
                            },
                            {
                               "name": "Literal",
-                              "content": ""Cenas"",
+                              "content": ""Cenas 2"",
                               "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:12)",
                               "children": [
                               {
@@ -372,13 +511,64 @@
                               }],
                            }],
                         }],
+                     }],
+                  },
+                  {
+                     "name": "Assignment",
+                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:14)",
+                     "children": [
+                     {
+                        "name": "TypeReference",
+                        "content": "int",
+                        "children": [],
                      },
                      {
-                        "name": "Block",
+                        "name": "VariableWrite",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:14)",
                         "children": [
                         {
-                           "name": "LocalVariable",
-                           "content": "d",
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        },
+                        {
+                           "name": "LocalVariableReference",
+                           "content": "a",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           }],
+                        }],
+                     },
+                     {
+                        "name": "Literal",
+                        "content": "3",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:14)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "int",
+                           "children": [],
+                        }],
+                     }],
+                  },
+                  {
+                     "name": "If",
+                     "children": [
+                     {
+                        "name": "BinaryOperator",
+                        "content": "<",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:15)",
+                        "children": [
+                        {
+                           "name": "TypeReference",
+                           "content": "boolean",
+                           "children": [],
+                        },
+                        {
+                           "name": "VariableRead",
                            "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:15)",
                            "children": [
                            {
@@ -387,9 +577,8 @@
                               "children": [],
                            },
                            {
-                              "name": "Literal",
-                              "content": "2",
-                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:15)",
+                              "name": "LocalVariableReference",
+                              "content": "a",
                               "children": [
                               {
                                  "name": "TypeReference",
@@ -399,8 +588,23 @@
                            }],
                         },
                         {
+                           "name": "Literal",
+                           "content": "3",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:15)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "int",
+                              "children": [],
+                           }],
+                        }],
+                     },
+                     {
+                        "name": "Block",
+                        "children": [
+                        {
                            "name": "Invocation",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:16)",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:17)",
                            "children": [
                            {
                               "name": "TypeReference",
@@ -409,7 +613,7 @@
                            },
                            {
                               "name": "FieldRead",
-                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:16)",
+                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:17)",
                               "children": [
                               {
                                  "name": "TypeReference",
@@ -469,8 +673,98 @@
                            },
                            {
                               "name": "Literal",
-                              "content": ""Cenas 2"",
-                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:16)",
+                              "content": ""menor"",
+                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:17)",
+                              "children": [
+                              {
+                                 "name": "TypeReference",
+                                 "content": "String",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.lang",
+                                    "children": [],
+                                 }],
+                              }],
+                           }],
+                        }],
+                     },
+                     {
+                        "name": "Block",
+                        "children": [
+                        {
+                           "name": "Invocation",
+                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:21)",
+                           "children": [
+                           {
+                              "name": "TypeReference",
+                              "content": "void",
+                              "children": [],
+                           },
+                           {
+                              "name": "FieldRead",
+                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:21)",
+                              "children": [
+                              {
+                                 "name": "TypeReference",
+                                 "content": "PrintStream",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.io",
+                                    "children": [],
+                                 }],
+                              },
+                              {
+                                 "name": "FieldReference",
+                                 "content": "out",
+                                 "children": [
+                                 {
+                                    "name": "TypeReference",
+                                    "content": "System",
+                                    "children": [
+                                    {
+                                       "name": "PackageReference",
+                                       "content": "java.lang",
+                                       "children": [],
+                                    }],
+                                 },
+                                 {
+                                    "name": "TypeReference",
+                                    "content": "PrintStream",
+                                    "children": [
+                                    {
+                                       "name": "PackageReference",
+                                       "content": "java.io",
+                                       "children": [],
+                                    }],
+                                 }],
+                              }],
+                           },
+                           {
+                              "name": "ExecutableReference",
+                              "content": "println",
+                              "children": [
+                              {
+                                 "name": "TypeReference",
+                                 "content": "PrintStream",
+                                 "children": [
+                                 {
+                                    "name": "PackageReference",
+                                    "content": "java.io",
+                                    "children": [],
+                                 }],
+                              },
+                              {
+                                 "name": "TypeReference",
+                                 "content": "void",
+                                 "children": [],
+                              }],
+                           },
+                           {
+                              "name": "Literal",
+                              "content": ""maior"",
+                              "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:21)",
                               "children": [
                               {
                                  "name": "TypeReference",
@@ -487,92 +781,8 @@
                      }],
                   },
                   {
-                     "name": "LocalVariable",
-                     "content": "b",
-                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:19)",
-                     "children": [
-                     {
-                        "name": "TypeReference",
-                        "content": "int",
-                        "children": [],
-                     },
-                     {
-                        "name": "Literal",
-                        "content": "2",
-                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:19)",
-                        "children": [
-                        {
-                           "name": "TypeReference",
-                           "content": "int",
-                           "children": [],
-                        }],
-                     }],
-                  },
-                  {
-                     "name": "LocalVariable",
-                     "content": "c",
-                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:20)",
-                     "children": [
-                     {
-                        "name": "TypeReference",
-                        "content": "int",
-                        "children": [],
-                     },
-                     {
-                        "name": "BinaryOperator",
-                        "content": "+",
-                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:20)",
-                        "children": [
-                        {
-                           "name": "TypeReference",
-                           "content": "int",
-                           "children": [],
-                        },
-                        {
-                           "name": "VariableRead",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:20)",
-                           "children": [
-                           {
-                              "name": "TypeReference",
-                              "content": "int",
-                              "children": [],
-                           },
-                           {
-                              "name": "LocalVariableReference",
-                              "content": "b",
-                              "children": [
-                              {
-                                 "name": "TypeReference",
-                                 "content": "int",
-                                 "children": [],
-                              }],
-                           }],
-                        },
-                        {
-                           "name": "VariableRead",
-                           "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:20)",
-                           "children": [
-                           {
-                              "name": "TypeReference",
-                              "content": "int",
-                              "children": [],
-                           },
-                           {
-                              "name": "LocalVariableReference",
-                              "content": "a",
-                              "children": [
-                              {
-                                 "name": "TypeReference",
-                                 "content": "int",
-                                 "children": [],
-                              }],
-                           }],
-                        }],
-                     }],
-                  },
-                  {
                      "name": "Invocation",
-                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:21)",
+                     "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:24)",
                      "children": [
                      {
                         "name": "TypeReference",
@@ -581,7 +791,7 @@
                      },
                      {
                         "name": "FieldRead",
-                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:21)",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:24)",
                         "children": [
                         {
                            "name": "TypeReference",
@@ -640,21 +850,17 @@
                         }],
                      },
                      {
-                        "name": "VariableRead",
-                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:21)",
+                        "name": "Literal",
+                        "content": ""Chegou ao fim"",
+                        "code": "(/Users/Eduardo Reis/COMP/AST/src/main/Main.java:24)",
                         "children": [
                         {
                            "name": "TypeReference",
-                           "content": "int",
-                           "children": [],
-                        },
-                        {
-                           "name": "LocalVariableReference",
-                           "content": "c",
+                           "content": "String",
                            "children": [
                            {
-                              "name": "TypeReference",
-                              "content": "int",
+                              "name": "PackageReference",
+                              "content": "java.lang",
                               "children": [],
                            }],
                         }],

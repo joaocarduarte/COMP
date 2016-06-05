@@ -1,7 +1,10 @@
 digraph graphname{
-"void main(String[] args)" -> "int a = 2;" -> "If(a<4)"
-"If(a<4)" -> "System.out.println(\"Still doing\");"[label="true"]
-"System.out.println(\"Still doing\");" -> "a++"->"System.out.println(\"Cenas\");" -> "int b = 2;"
-"If(a<4)" -> "int d = 2;"[label="false"]
-"int d = 2;" -> "System.out.println(\"Cenas 2\");"->"int b = 2;"
-"int b = 2;" -> "int c = b+a" -> "System.out.println(c);"}
+"void main(String[] args)" -> "int a = 2;" -> "change(a) " -> "For(i = 0;i<2;i++)"
+"For(i = 0;i<2;i++)" -> "System.out.println(\"Cenas\");" -> "System.out.println(\"Cenas 2\");" -> "a = 3"
+"System.out.println(\"Cenas 2\");" -> "For(i = 0;i<2;i++)"
+"a = 3" -> "If(a<3)"
+"If(a<3)" -> "System.out.println(\"menor\");"[label="false"]
+"System.out.println(\"menor\");" -> "System.out.println(\"Chegou ao fim\");"
+"If(a<3)" -> "System.out.println(\"maior\");"[label="false"]
+"System.out.println(\"maior\");" -> "System.out.println(\"Chegou ao fim\");"
+"System.out.println(\"Chegou ao fim\");"}

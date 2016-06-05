@@ -745,7 +745,7 @@ class SimpleNode implements Node {
 			writer.println("[label=\"false\"]");
 		}
 
-		if(c.children.length > 1)
+		if(c.children.length > 2)
 		{
 			cc = (SimpleNode)c.children[2];			//CONDICIONADO FALSE(caso exista)
 			writer.print(ifCondition);

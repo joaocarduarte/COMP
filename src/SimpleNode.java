@@ -182,6 +182,7 @@ class SimpleNode implements Node {
 									else {
 										mainSentence += ", ";
 									}
+									
 								}			
 							}
 							SimpleNode block = (SimpleNode)n.children[n.children.length-1];
@@ -773,7 +774,7 @@ class SimpleNode implements Node {
 
 	private String analyzeLine(SimpleNode c){
 		String str = "";
-
+		
 		/////////////////////////////////////////////////////// int a = 1;
 		if(c.name.equals("\"LocalVariable\""))
 		{
@@ -784,6 +785,7 @@ class SimpleNode implements Node {
 			else if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
 				SimpleNode ccc = (SimpleNode)cc.children[0];
 				str += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
+				
 			}
 
 			if(c.children.length == 1){
@@ -824,8 +826,9 @@ class SimpleNode implements Node {
 					}
 				
 						str += " = " + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + "\"";
-					
+						
 				}
+			
 				else if(cc.name.equals("\"NewArray\"")){
 					String temp2 = "";
 					temp2 += "= {";
@@ -848,7 +851,7 @@ class SimpleNode implements Node {
 					temp2 = temp2.replaceAll("\"", "\\\\\"");
 					temp2 += "};" + "\"";
 					str = str + temp2;
-					System.out.println(str);
+					
 				}
 
 			}
@@ -903,6 +906,7 @@ class SimpleNode implements Node {
 		{
 			str += "\"";
 			SimpleNode cc = (SimpleNode)c.children[1];
+			
 			if(cc.name.equals("\"VariableWrite\""))
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[1];
@@ -911,12 +915,35 @@ class SimpleNode implements Node {
 					str += removeQuotationMarks(ccc.content) + " = ";
 				}
 			}
+			if(cc.name.equals("\"ArrayWrite\"")){
+				
+				SimpleNode ccc = (SimpleNode)cc.children[1];
+				SimpleNode ttt = (SimpleNode)cc.children[2];
+				if(ccc.name.equals("\"VariableRead\""))
+				{
+					SimpleNode cccc = (SimpleNode)ccc.children[1];
+					if(cccc.name.equals("\"LocalVariableReference\""))
+					{
+						str+=removeQuotationMarks(cccc.content) + "[";
+						
+					}
+				}
+				if(ttt.name.equals("\"Literal\""))
+				{
+					str+=removeQuotationMarks(ttt.content) + "]=";
+				}
+				
+			}
 			cc = (SimpleNode)c.children[2];
 			if(cc.name.equals("\"Literal\""))
 			{
-				str += removeQuotationMarks(cc.content);
+				String temperino="";
+				temperino = removeQuotationMarks(cc.content) + ";";
+				temperino = temperino.replaceAll("\"", "\\\\\"");
+				str = str + temperino;
 			}
 			str += "\"";
+			
 			return str;
 		}
 

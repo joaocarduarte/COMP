@@ -269,25 +269,25 @@ class SimpleNode implements Node {
 				{
 					writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
 				}*/
-				writer.print(analyzeLine((SimpleNode)block.children[k+1]));
+				writer.print(analyzeLine((SimpleNode)block.children[k+1], definedVariables));
 				k++;
 			}
 			else if(c.name.equals("\"If\"")) 
 			{
-				analyzeIf(c, writer);
+				analyzeIf(c, writer, definedVariables);
 			}
 			//////////////////////////////////////////END IF
 
 			//////////////////////////////////////////Begin While
 			else if(c.name.equals("\"While\"") && k + 1 < block.children.length)
 			{
-				analyzeWhile(c, writer, (SimpleNode)block.children[k+1]);
-				writer.print(analyzeLine((SimpleNode)block.children[k+1]));
+				analyzeWhile(c, writer, (SimpleNode)block.children[k+1], definedVariables);
+				writer.print(analyzeLine((SimpleNode)block.children[k+1], definedVariables));
 				k++;
 			}
 			else if(c.name.equals("\"While\""))
 			{
-				analyzeWhile(c, writer);
+				analyzeWhile(c, writer, definedVariables);
 			}
 			///////////////////////////////////////////END While
 
@@ -300,12 +300,12 @@ class SimpleNode implements Node {
 				{
 					writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
 				}*/
-				writer.print(analyzeLine((SimpleNode)block.children[k+1]));
+				writer.print(analyzeLine((SimpleNode)block.children[k+1], definedVariables));
 				k++;
 			}
 			else if(c.name.equals("\"For\""))
 			{
-				analyzeFor(c, writer);
+				analyzeFor(c, writer, definedVariables);
 			}
 			//////////////////////////////////////////END For
 			
@@ -320,7 +320,7 @@ class SimpleNode implements Node {
 	}
 
 	// For SEM codigo a frente
-	private void analyzeFor(SimpleNode c, PrintWriter writer) { 
+	private void analyzeFor(SimpleNode c, PrintWriter writer, HashMap<String, ArrayList<String>> definedVariables) { 
 
 		// TODO ver se after nao e ciclo ou if
 
@@ -392,7 +392,7 @@ class SimpleNode implements Node {
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[l];
 
-				lastLine = analyzeLine(ccc);
+				lastLine = analyzeLine(ccc, definedVariables);
 
 
 				if(l == (cc.children.length - 1)){
@@ -495,7 +495,7 @@ class SimpleNode implements Node {
 
 				if(l == (cc.children.length - 1)){
 					//lastConditioned.add(lastLine);
-					writer.println(" -> " + lastLine + " -> " + analyzeLine(after));
+					writer.println(" -> " + lastLine + " -> " + analyzeLine(after, definedVariables));
 					writer.println(lastLine + " -> " + forCondition);
 					for(int j = 0; j < variablesUsed.size(); j++)
 					{
@@ -509,7 +509,7 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeWhile(SimpleNode c, PrintWriter writer)
+	private void analyzeWhile(SimpleNode c, PrintWriter writer, HashMap<String, ArrayList<String>> definedVariables)
 	{
 		// TODO ver se after n�o � ciclo ou if
 
@@ -554,7 +554,7 @@ class SimpleNode implements Node {
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[l];
 
-				lastLine = analyzeLine(ccc);
+				lastLine = analyzeLine(ccc, definedVariables);
 
 
 				if(l == (cc.children.length - 1)){
@@ -568,7 +568,7 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeWhile(SimpleNode c, PrintWriter writer, SimpleNode after) {
+	private void analyzeWhile(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) {
 		// TODO ver se after n�o � ciclo ou if
 
 		//ArrayList<String> lastConditioned = new ArrayList<String>();
@@ -612,12 +612,12 @@ class SimpleNode implements Node {
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[l];
 
-				lastLine = analyzeLine(ccc);
+				lastLine = analyzeLine(ccc, definedVariables);
 
 
 				if(l == (cc.children.length - 1)){
 					//lastConditioned.add(lastLine);
-					writer.println(" -> " + lastLine + " -> " + analyzeLine(after));
+					writer.println(" -> " + lastLine + " -> " + analyzeLine(after, definedVariables));
 					writer.println(lastLine + " -> " + whileCondition);
 				}
 				else
@@ -777,7 +777,8 @@ class SimpleNode implements Node {
 
 	}
 
-	private void analyzeIf(SimpleNode c, PrintWriter writer) {
+	private void analyzeIf(SimpleNode c, PrintWriter writer, HashMap<String, ArrayList<String>> definedVariables) {
+		ArrayList<String> variablesUsed = new ArrayList<String>();
 		ArrayList<String> lastConditioned = new ArrayList<String>();
 		//CONDICAO
 		String ifCondition = null;
@@ -792,6 +793,8 @@ class SimpleNode implements Node {
 			{
 				SimpleNode cccc = (SimpleNode)ccc.children[1];
 				compare1 = (String) cccc.content;
+				if(!variablesUsed.contains(removeQuotationMarks(cccc.content)))
+					variablesUsed.add(removeQuotationMarks(cccc.content));
 			}	
 			else if(ccc.name.equals("\"Literal\""))
 			{
@@ -802,6 +805,8 @@ class SimpleNode implements Node {
 			{
 				SimpleNode cccc = (SimpleNode)ccc.children[1];
 				compare2 = (String) cccc.content;
+				if(!variablesUsed.contains(removeQuotationMarks(cccc.content)))
+					variablesUsed.add(removeQuotationMarks(cccc.content));
 			}	
 			else if(ccc.name.equals("\"Literal\""))
 			{
@@ -819,7 +824,7 @@ class SimpleNode implements Node {
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[l];
 
-				lastLine = " -> " + analyzeLine(cc);
+				lastLine = " -> " + analyzeLine(cc, definedVariables);
 				writer.print(lastLine);
 
 				if(l == (cc.children.length - 1)){
@@ -829,7 +834,7 @@ class SimpleNode implements Node {
 			}
 		}
 		else{								//caso seja uma linha so
-			lastLine = analyzeLine(cc);
+			lastLine = analyzeLine(cc, definedVariables);
 			writer.print(" -> " + lastLine);
 			lastConditioned.add(lastLine);
 			writer.println("[label=\"true\"]");
@@ -844,7 +849,7 @@ class SimpleNode implements Node {
 				{
 					SimpleNode ccc = (SimpleNode)cc.children[l];
 
-					lastLine = " -> " + analyzeLine(cc);
+					lastLine = " -> " + analyzeLine(cc, definedVariables);
 					writer.print(lastLine);
 
 					if(l == (cc.children.length - 1)){
@@ -854,201 +859,12 @@ class SimpleNode implements Node {
 				}
 			}
 			else{								//caso seja uma linha so
-				lastLine = analyzeLine(cc);
+				lastLine = analyzeLine(cc,definedVariables);
 				writer.print(" -> " + lastLine);
 				lastConditioned.add(lastLine);
 				writer.println("[label=\"false\"]");
 			}
 		}	
-	}
-
-	private String analyzeLine(SimpleNode c){
-		String str = "";
-
-		/////////////////////////////////////////////////////// int a = 1;
-		if(c.name.equals("\"LocalVariable\""))
-		{
-			SimpleNode cc = (SimpleNode)c.children[0];
-			if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
-				str += "\"" + removeQuotationMarks(cc.content) + " " + removeQuotationMarks(c.content);
-
-			else if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
-				SimpleNode ccc = (SimpleNode)cc.children[0];
-				str += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
-
-			}
-
-			if(c.children.length == 1){
-				str += (";");
-			}
-			else{									//rever este else mais tarde
-				cc = (SimpleNode)c.children[1];
-				if(cc.name.equals("\"Literal\"")){
-					String temp = " = " + removeQuotationMarks(cc.content);
-					temp = temp.replaceAll("\"", "\\\\\"");
-					temp += ";" + "\"";	
-					str = str + temp;
-				}
-				else if(cc.name.equals("\"BinaryOperator\""))
-				{
-					String binaryOperator = (String) cc.content;
-					String compare1 = null;
-					String compare2 = null;
-					SimpleNode ccc = (SimpleNode)cc.children[1];
-					if(ccc.name.equals("\"VariableRead\""))
-					{
-						SimpleNode cccc = (SimpleNode)ccc.children[1];
-						compare1 = (String) cccc.content;
-					}	
-					else if(ccc.name.equals("\"Literal\""))
-					{
-						compare1 = (String) ccc.content;
-					}
-					ccc = (SimpleNode)cc.children[2];
-					if(ccc.name.equals("\"VariableRead\""))
-					{
-						SimpleNode cccc = (SimpleNode)ccc.children[1];
-						compare2 = (String) cccc.content;
-					}	
-					else if(ccc.name.equals("\"Literal\""))
-					{
-						compare2 = (String) ccc.content;
-					}
-
-					str += " = " + removeQuotationMarks(compare1) + removeQuotationMarks(binaryOperator) + removeQuotationMarks(compare2) + "\"";
-
-				}
-
-				else if(cc.name.equals("\"NewArray\"")){
-					String temp2 = "";
-					temp2 += "= {";
-					for(int i2 = 1;i2< cc.children.length;i2++){
-						if(i2==1){
-							SimpleNode arraycontent = (SimpleNode) cc.children[i2];
-							temp2 += removeQuotationMarks(arraycontent.content);
-
-
-						}
-						else{
-							SimpleNode arraycontent = (SimpleNode) cc.children[i2];
-
-							temp2 += ","+ removeQuotationMarks(arraycontent.content);
-
-						}
-
-					}
-					temp2 = temp2.replaceAll("\"", "\\\\\"");
-					temp2 += "};" + "\"";
-					str = str + temp2;
-				}
-			}
-			return str;
-		}
-
-		if(c.name.equals("\"Invocation\""))
-		{
-			SimpleNode cc = (SimpleNode)c.children[2]; /////////////////////////////////////////////////////// System.out.println()
-			if(cc.name.equals("\"ExecutableReference\""))
-			{
-				if(cc.content.equals("\"println\"")) 
-				{
-					cc = (SimpleNode)c.children[3];
-					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma variavel ou texto(else)
-					{
-						SimpleNode ccc = (SimpleNode)cc.children[1];
-						str = "\"System.out.println(" + removeQuotationMarks(ccc.content) + ");" + "\"";
-
-					}
-					else
-						return str = "\"System.out.println(" + "\\" + "\"" + removeQuotationMarks(removeQuotationMarks(cc.content))+ "\\" + "\"" + ");" + "\"";
-				}
-			}
-			cc = (SimpleNode)c.children[1]; /////////////////////////////FUNCAO
-			if(cc.name.equals("\"ExecutableReference\""))
-			{
-				String function = removeQuotationMarks(cc.content);
-				str += "\"" + function + "(";
-				for (int j = 2; j < c.children.length; j++)
-				{
-					cc = (SimpleNode)c.children[j];
-					if(cc.name.equals("\"VariableRead\""))
-					{
-						SimpleNode ccc = (SimpleNode)cc.children[1];
-						if(ccc.name.equals("\"LocalVariableReference\""))
-						{
-							if(j == 2)
-								str += removeQuotationMarks(ccc.content);
-							else
-								str += ", " + removeQuotationMarks(ccc.content);
-
-
-						}
-					}
-				}
-				return str += ") \"";
-			}
-		}
-		//////////////////////////////////////////// mudar valor variavel
-		if(c.name.equals("\"Assignment\""))
-		{
-			str += "\"";
-			SimpleNode cc = (SimpleNode)c.children[1];
-
-			if(cc.name.equals("\"VariableWrite\""))
-			{
-				SimpleNode ccc = (SimpleNode)cc.children[1];
-				if(ccc.name.equals("\"LocalVariableReference\""))
-				{
-					str += removeQuotationMarks(ccc.content) + " = ";
-				}
-			}
-			if(cc.name.equals("\"ArrayWrite\"")){
-
-				SimpleNode ccc = (SimpleNode)cc.children[1];
-				SimpleNode ttt = (SimpleNode)cc.children[2];
-				if(ccc.name.equals("\"VariableRead\""))
-				{
-					SimpleNode cccc = (SimpleNode)ccc.children[1];
-					if(cccc.name.equals("\"LocalVariableReference\""))
-					{
-						str+=removeQuotationMarks(cccc.content) + "[";
-
-					}
-				}
-				if(ttt.name.equals("\"Literal\""))
-				{
-					str+=removeQuotationMarks(ttt.content) + "]=";
-				}
-
-			}
-			cc = (SimpleNode)c.children[2];
-			if(cc.name.equals("\"Literal\""))
-			{
-				String temperino="";
-				temperino = removeQuotationMarks(cc.content) + ";";
-				temperino = temperino.replaceAll("\"", "\\\\\"");
-				str = str + temperino;
-			}
-			str += "\"";
-
-			return str;
-		}
-
-		////////////////////////////////////////// operador do tipo _++
-		if(c.name.equals("\"UnaryOperator\""))
-		{
-			String operator = (String) c.content;
-			SimpleNode cc = (SimpleNode) c.children[1];
-			if(cc.name.equals("\"VariableRead\""))
-			{
-				SimpleNode ccc = (SimpleNode) cc.children[1];
-				if(ccc.name.equals("\"LocalVariableReference\""))
-				{
-					str += "\"" + removeQuotationMarks(ccc.content) + (removeQuotationMarks(operator)).substring(1, removeQuotationMarks(operator).length()) + "\"";
-				}
-			}
-		}
-		return str;
 	}
 
 	private String analyzeLine(SimpleNode c, HashMap<String,ArrayList<String>> definedVariables){
@@ -1148,7 +964,7 @@ class SimpleNode implements Node {
 			return str;
 		}
 
-		if(c.name.equals("\"Invocation\""))
+		else if(c.name.equals("\"Invocation\""))
 		{
 			SimpleNode cc = (SimpleNode)c.children[2]; /////////////////////////////////////////////////////// System.out.println()
 			if(cc.name.equals("\"ExecutableReference\""))
@@ -1204,7 +1020,7 @@ class SimpleNode implements Node {
 			}
 		}
 		//////////////////////////////////////////// mudar valor vari�vel
-		if(c.name.equals("\"Assignment\""))
+		else if(c.name.equals("\"Assignment\""))
 		{
 			str += "\"";
 			SimpleNode cc = (SimpleNode)c.children[1];
@@ -1258,7 +1074,7 @@ class SimpleNode implements Node {
 		}
 
 		////////////////////////////////////////// operador do tipo _++
-		if(c.name.equals("\"UnaryOperator\""))
+		else if(c.name.equals("\"UnaryOperator\""))
 		{
 			String operator = (String) c.content;
 			SimpleNode cc = (SimpleNode) c.children[1];

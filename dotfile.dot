@@ -11,6 +11,7 @@ digraph graphname{
 "int b = 4;" -> "int d = a+b"[label="b" style="dotted"]
 "int c = 5;" -> "int c = 5;"[label="c" style="dotted"]
 "int d = a+b" -> "int d = a+b"[label="d" style="dotted"]
+"int e = 5;" -> "int e = 5;"[label="e" style="dotted"]
 "int f = 4;" -> "int h = f+g"[label="f" style="dotted"]
 "int g = 5;" -> "int h = f+g"[label="g" style="dotted"]
 "int h = f+g" -> "int h = f+g"[label="h" style="dotted"]

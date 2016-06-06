@@ -1,19 +1,10 @@
 digraph graphname{
-"void main(String[] args)" -> "int a = 1;" -> "For(i = 0;i<3;i++)"
-"For(i = 0;i<3;i++)" -> "int b = 4;" -> "int c = 5;" -> "int d = a+b" -> "int e = 5;"
-"int d = a+b" -> "For(i = 0;i<3;i++)"
-"For(i = 0;i<3;i++)" -> "int d = a+b"[label="i" style="dotted"]
-"int e = 5;" -> "If(e>3)"
-"If(e>3)" -> "int f = 4;"[label="true"]
-"int f = 4;" -> "int g = 5;"->"int h = f+g" -> "int pila = 8;"
-"If(e>3)" -> "int pila = 8;"[label="false"]
-"int pila = 8;""int a = 1;" -> "int d = a+b"[label="a" style="dotted"]
+"void main(String[] args)" -> "int a = 1;" -> "int e = 2;" -> "While(a<5)"
+"While(a<5)" -> "int b = 4;" -> "int c = 5;" -> "int d = a+b" -> "a++" -> "System.out.println(a);"
+"a++" -> "While(a<5)"
+"System.out.println(a);""int a = 1;" -> "System.out.println(a);"[label="a" style="dotted"]
 "int b = 4;" -> "int d = a+b"[label="b" style="dotted"]
 "int c = 5;" -> "int c = 5;"[label="c" style="dotted"]
 "int d = a+b" -> "int d = a+b"[label="d" style="dotted"]
-"int e = 5;" -> "int e = 5;"[label="e" style="dotted"]
-"int f = 4;" -> "int h = f+g"[label="f" style="dotted"]
-"int g = 5;" -> "int h = f+g"[label="g" style="dotted"]
-"int h = f+g" -> "int h = f+g"[label="h" style="dotted"]
-"int pila = 8;" -> "int pila = 8;"[label="pila" style="dotted"]
+"int e = 2;" -> "int e = 2;"[label="e" style="dotted"]
 }

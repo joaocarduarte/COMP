@@ -80,81 +80,30 @@ class SimpleNode implements Node {
      out its children. */
 
 	public void dump(String prefix) {
-		//	System.out.println(toString(prefix) + name);
 		if (children != null) {
 			for (int i = 0; i < children.length; ++i) {
 				SimpleNode n = (SimpleNode)children[i];
 				if (n != null) {
-					//	System.out.println(value);
 					n.dump(prefix + " ");
 				}
 			}
 		}
 	}
+	
 	public void printstuff(String prefix){
-		//System.out.println(value);
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter("dotfile.dot", "UTF-8");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		writer.println("digraph graphname{");
-		//drawtherest(writer,prefix,prefix);
 		ArrayList<String> order = new ArrayList<String>();
 		filter(writer,prefix, order);
 		writer.println("}");
 		writer.close();
-	}
-
-	private void drawtherest(PrintWriter writer,String prefix,String parent) {
-		// TODO Auto-generated method stub
-		//writer.println(";");
-		/*
-	if (children != null) {
-	      for (int i = 0; i < children.length; ++i) {
-	        SimpleNode n = (SimpleNode)children[i];
-	        if (n != null) {
-	        writer.println(n.jjtGetParent() + "--" + n.jjtGetValue());
-	        n.drawtherest(writer, prefix);
-	        }
-	      }
-	    }
-		 */
-		String temp;
-		if (this.children != null) {
-			for (int i = 0; i < this.children.length; ++i) {
-				SimpleNode n = (SimpleNode)this.children[i];
-				SimpleNode p = (SimpleNode)n.parent;
-				writer.println(p.name + " -- " + n.name + ";");
-				if(n != null)
-					//  writer.print("gotcha");
-
-					n.drawtherest(writer, prefix,prefix);
-			}
-		}
-	}
-
-	private void addToVariables(String variable, String path)
-	{
-		if(variables.containsKey(variable))
-		{
-			if(variables.get(variable).size() > 1)
-			{
-				variables.get(variable).remove(1);
-				variables.get(variable).add(path);
-			}
-		}
-		else
-		{
-			variables.put(variable, new ArrayList<String>());
-			variables.get(variable).add(path);
-			variables.get(variable).add(path);
-		}
 	}
 
 	private void addToVariables(String variable, String path, HashMap<String, ArrayList<String>> definedVariables)
@@ -175,20 +124,12 @@ class SimpleNode implements Node {
 		}
 	}
 
-
 	public void filter(PrintWriter writer,String string, ArrayList<String> order) {
 		// TODO Auto-generated method stub
 		variables = new HashMap<String, ArrayList<String>>();
 		if (this.children != null) {
 			for (int i = 0; i < this.children.length; ++i) {
 				SimpleNode n = (SimpleNode)this.children[i];
-				SimpleNode p = (SimpleNode)n.parent;
-				//				if(foundmain)
-				//				{	
-				//					if(n.name.equals("\"Block\""))
-				//						analyzeblock(n);
-				//
-				//				}
 				if(n.name!=null){
 					if(n.name.equals("\"Method\"")){
 						if(n.content.equals("\"main\"")){ //para o caso do main
@@ -248,7 +189,7 @@ class SimpleNode implements Node {
 
 	}
 
-	String removeQuotationMarks(Object content2)
+	private String removeQuotationMarks(Object content2)
 	{
 		String operation1 = ((String) content2).substring(1, ((String) content2).length() - 1);
 		return operation1;
@@ -263,12 +204,7 @@ class SimpleNode implements Node {
 			////////////////////////////////////////// BEGIN IF
 			if(c.name.equals("\"If\"") && k + 1 < block.children.length) 
 			{
-				//HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
 				analyzeIf(c, writer, (SimpleNode)block.children[k+1], definedVariables);
-				/*for ( String key : definedVariables.keySet() )
-				{
-					writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
-				}*/
 				writer.print(analyzeLine((SimpleNode)block.children[k+1], definedVariables));
 				k++;
 			}
@@ -294,12 +230,7 @@ class SimpleNode implements Node {
 			//////////////////////////////////////////Begin For
 			else if(c.name.equals("\"For\"") && k + 1 < block.children.length)
 			{
-				//HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
 				analyzeFor(c, writer, (SimpleNode)block.children[k+1], definedVariables);
-				/*for ( String key : definedVariables.keySet() )
-				{
-					writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
-				}*/
 				writer.print(analyzeLine((SimpleNode)block.children[k+1], definedVariables));
 				k++;
 			}
@@ -508,13 +439,11 @@ class SimpleNode implements Node {
 			}
 		}
 	}
-
+	
+	// While SEM codigo a frente
 	private void analyzeWhile(SimpleNode c, PrintWriter writer, HashMap<String, ArrayList<String>> definedVariables)
 	{
-		// TODO ver se after n�o � ciclo ou if
-
-		//ArrayList<String> lastConditioned = new ArrayList<String>();
-		//CONDICAO
+		ArrayList<String> variablesUsed = new ArrayList<String>();
 		String whileCondition = null;
 		SimpleNode cc = (SimpleNode)c.children[0];
 		if(cc.name.equals("\"BinaryOperator\""))	//While DO TIPO while(a operador b)
@@ -527,6 +456,8 @@ class SimpleNode implements Node {
 			{
 				SimpleNode cccc = (SimpleNode)ccc.children[1];
 				compare1 = (String) cccc.content;
+				if(!variablesUsed.contains(removeQuotationMarks(cccc.content)))
+					variablesUsed.add(removeQuotationMarks(cccc.content));
 			}	
 			else if(ccc.name.equals("\"Literal\""))
 			{
@@ -537,6 +468,8 @@ class SimpleNode implements Node {
 			{
 				SimpleNode cccc = (SimpleNode)ccc.children[1];
 				compare2 = (String) cccc.content;
+				if(!variablesUsed.contains(removeQuotationMarks(cccc.content)))
+					variablesUsed.add(removeQuotationMarks(cccc.content));
 			}	
 			else if(ccc.name.equals("\"Literal\""))
 			{
@@ -568,11 +501,9 @@ class SimpleNode implements Node {
 		}
 	}
 
+	// While COM codigo a frente
 	private void analyzeWhile(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) {
-		// TODO ver se after n�o � ciclo ou if
-
-		//ArrayList<String> lastConditioned = new ArrayList<String>();
-		//CONDICAO
+		ArrayList<String> variablesUsed = new ArrayList<String>();
 		String whileCondition = null;
 		SimpleNode cc = (SimpleNode)c.children[0];
 		if(cc.name.equals("\"BinaryOperator\""))	//While DO TIPO while(a operador b)
@@ -585,6 +516,8 @@ class SimpleNode implements Node {
 			{
 				SimpleNode cccc = (SimpleNode)ccc.children[1];
 				compare1 = (String) cccc.content;
+				if(!variablesUsed.contains(removeQuotationMarks(cccc.content)))
+					variablesUsed.add(removeQuotationMarks(cccc.content));
 			}	
 			else if(ccc.name.equals("\"Literal\""))
 			{
@@ -595,6 +528,8 @@ class SimpleNode implements Node {
 			{
 				SimpleNode cccc = (SimpleNode)ccc.children[1];
 				compare2 = (String) cccc.content;
+				if(!variablesUsed.contains(removeQuotationMarks(cccc.content)))
+					variablesUsed.add(removeQuotationMarks(cccc.content));
 			}	
 			else if(ccc.name.equals("\"Literal\""))
 			{
@@ -626,9 +561,8 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) { // caso haja codigo depois do IF
-		//TODO ver se after nao e ciclo ou if
-
+	// If COM codigo a frente
+	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) { 
 		ArrayList<String> variablesUsed = new ArrayList<String>();
 		String lastConditioned = null;
 		//CONDICAO
@@ -777,6 +711,7 @@ class SimpleNode implements Node {
 
 	}
 
+	// If SEM codigo a frente
 	private void analyzeIf(SimpleNode c, PrintWriter writer, HashMap<String, ArrayList<String>> definedVariables) {
 		ArrayList<String> variablesUsed = new ArrayList<String>();
 		ArrayList<String> lastConditioned = new ArrayList<String>();
@@ -816,14 +751,12 @@ class SimpleNode implements Node {
 			writer.println(" -> " + ifCondition);
 		}
 		//CONDICIONADOS
-		String lastLine = "";			//*ultima linha para ser adicionado ao arraylist*
+		String lastLine = "";			
 		cc = (SimpleNode)c.children[1];			//CONDICIONADO TRUE
 		writer.print(ifCondition);
 		if(cc.name.equals("\"Block\"")){	//caso seja um block
 			for(int l = 0; l < cc.children.length; l++)		
 			{
-				SimpleNode ccc = (SimpleNode)cc.children[l];
-
 				lastLine = " -> " + analyzeLine(cc, definedVariables);
 				writer.print(lastLine);
 
@@ -847,8 +780,6 @@ class SimpleNode implements Node {
 			if(cc.name.equals("\"Block\"")){	//caso seja um bloco
 				for(int l = 0; l < cc.children.length; l++)	
 				{
-					SimpleNode ccc = (SimpleNode)cc.children[l];
-
 					lastLine = " -> " + analyzeLine(cc, definedVariables);
 					writer.print(lastLine);
 
@@ -867,6 +798,7 @@ class SimpleNode implements Node {
 		}	
 	}
 
+	
 	private String analyzeLine(SimpleNode c, HashMap<String,ArrayList<String>> definedVariables){
 		String str = "";
 		ArrayList<String>variablesUsed = new ArrayList<String>();
@@ -874,14 +806,14 @@ class SimpleNode implements Node {
 		if(c.name.equals("\"LocalVariable\""))
 		{
 			SimpleNode cc = (SimpleNode)c.children[0];
-			if(cc.name.equals("\"TypeReference\"")) //se for typereference nao tem mais filhos
+			if(cc.name.equals("\"TypeReference\""))
 			{
 				str += "\"" + removeQuotationMarks(cc.content) + " " + removeQuotationMarks(c.content);
 				if(!variablesUsed.contains(removeQuotationMarks(c.content)))
 					variablesUsed.add(removeQuotationMarks(c.content));
 			}
 
-			else if(cc.name.equals("\"ArrayTypeReference\"")){ //se for arraytypereference tem mais um filho
+			else if(cc.name.equals("\"ArrayTypeReference\"")){ 
 				SimpleNode ccc = (SimpleNode)cc.children[0];
 				str += "\"" + removeQuotationMarks(ccc.content) + "[] " + removeQuotationMarks(c.content);
 				if(!variablesUsed.contains(removeQuotationMarks(c.content)))
@@ -890,9 +822,10 @@ class SimpleNode implements Node {
 			}
 
 			if(c.children.length == 1){
-				str += (";");
+				String temp = ";" + "\"";	
+				str = str + temp;
 			}
-			else{									//rever este else mais tarde
+			else{								
 				cc = (SimpleNode)c.children[1];
 				if(cc.name.equals("\"Literal\"")){
 					String temp = " = " + removeQuotationMarks(cc.content);

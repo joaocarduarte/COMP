@@ -1,14 +1,18 @@
 digraph graphname{
-"void main(String[] args)" -> "int a = 2;" -> "change(a) " -> "For(i = 0;i<2;i++)"
-"For(i = 0;i<2;i++)" -> "int cenas = 2;" -> "int lala = 5;" -> "int lili = lala+cenas" -> "System.out.println(lili);" -> "a = 3;"
-"System.out.println(lili);" -> "For(i = 0;i<2;i++)"
-"For(i = 0;i<2;i++)" -> "System.out.println(lili);"[label="i" style="dotted"]
-"int lala = 5;" -> "int lili = lala+cenas"[label="lala" style="dotted"]
-"int lili = lala+cenas" -> "System.out.println(lili);"[label="lili" style="dotted"]
-"int cenas = 2;" -> "int lili = lala+cenas"[label="cenas" style="dotted"]
-"a = 3;" -> "If(a<3)"
-"If(a<3)" -> "System.out.println(\"menor\");"[label="true"]
-"System.out.println(\"menor\");" -> "System.out.println(\"Chegou ao fim\");"
-"If(a<3)" -> "System.out.println(\"maior\");"[label="false"]
-"System.out.println(\"maior\");" -> "System.out.println(\"Chegou ao fim\");"
-"System.out.println(\"Chegou ao fim\");"}
+"void main(String[] args)" -> "int a = 1;" -> "For(i = 0;i<3;i++)"
+"For(i = 0;i<3;i++)" -> "int b = 4;" -> "int c = 5;" -> "int d = a+b" -> "int e = 5;"
+"int d = a+b" -> "For(i = 0;i<3;i++)"
+"For(i = 0;i<3;i++)" -> "int d = a+b"[label="i" style="dotted"]
+"int e = 5;" -> "If(e>3)"
+"If(e>3)" -> "int f = 4;"[label="true"]
+"int f = 4;" -> "int g = 5;"->"int h = f+g" -> "int pila = 8;"
+"If(e>3)" -> "int pila = 8;"[label="false"]
+"int pila = 8;""int a = 1;" -> "int d = a+b"[label="a" style="dotted"]
+"int b = 4;" -> "int d = a+b"[label="b" style="dotted"]
+"int c = 5;" -> "int c = 5;"[label="c" style="dotted"]
+"int d = a+b" -> "int d = a+b"[label="d" style="dotted"]
+"int f = 4;" -> "int h = f+g"[label="f" style="dotted"]
+"int g = 5;" -> "int h = f+g"[label="g" style="dotted"]
+"int h = f+g" -> "int h = f+g"[label="h" style="dotted"]
+"int pila = 8;" -> "int pila = 8;"[label="pila" style="dotted"]
+}

@@ -255,6 +255,7 @@ class SimpleNode implements Node {
 	}
 
 	private void analyzeBlock(SimpleNode block, PrintWriter writer) {
+		HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
 		for(int k = 0; k < block.children.length; k++)
 		{
 			SimpleNode c = (SimpleNode)block.children[k];
@@ -262,12 +263,12 @@ class SimpleNode implements Node {
 			////////////////////////////////////////// BEGIN IF
 			if(c.name.equals("\"If\"") && k + 1 < block.children.length) 
 			{
-				HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
+				//HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
 				analyzeIf(c, writer, (SimpleNode)block.children[k+1], definedVariables);
-				for ( String key : definedVariables.keySet() )
+				/*for ( String key : definedVariables.keySet() )
 				{
 					writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
-				}
+				}*/
 				writer.print(analyzeLine((SimpleNode)block.children[k+1]));
 				k++;
 			}
@@ -290,14 +291,15 @@ class SimpleNode implements Node {
 			}
 			///////////////////////////////////////////END While
 
+			//////////////////////////////////////////Begin For
 			else if(c.name.equals("\"For\"") && k + 1 < block.children.length)
 			{
-				HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
+				//HashMap<String, ArrayList<String>> definedVariables = new HashMap<String, ArrayList<String>>();
 				analyzeFor(c, writer, (SimpleNode)block.children[k+1], definedVariables);
-				for ( String key : definedVariables.keySet() )
+				/*for ( String key : definedVariables.keySet() )
 				{
 					writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
-				}
+				}*/
 				writer.print(analyzeLine((SimpleNode)block.children[k+1]));
 				k++;
 			}
@@ -305,18 +307,25 @@ class SimpleNode implements Node {
 			{
 				analyzeFor(c, writer);
 			}
-			else{ 	//imprime tudo que nao � ifs, fors e whiles
-				writer.print( " -> " +analyzeLine(c));
+			//////////////////////////////////////////END For
+			
+			else{ 	//imprime tudo que nao e ifs, fors e whiles
+				writer.print( " -> " +analyzeLine(c, definedVariables));
 			}
+		}
+		for ( String key : definedVariables.keySet() )
+		{
+			writer.println(definedVariables.get(key).get(0) + " -> " + definedVariables.get(key).get(1) + "[label=\""+ key +"\" style=\"dotted\"]");
 		}
 	}
 
-	private void analyzeFor(SimpleNode c, PrintWriter writer) { // For sem c�digo � frente
+	// For SEM codigo a frente
+	private void analyzeFor(SimpleNode c, PrintWriter writer) { 
 
-		// TODO ver se after n�o � ciclo ou if
+		// TODO ver se after nao e ciclo ou if
 
 		String forCondition = null;
-		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condi��es
+		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condicoes
 		SimpleNode cc = (SimpleNode)c.children[0];
 		if(cc.name.equals("\"LocalVariable\""))	//FOR
 		{
@@ -397,11 +406,12 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeFor(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) { // For com c�digo � frente
-		// TODO ver se after n�o � ciclo ou if
+	// For COM codigo a frente
+	private void analyzeFor(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) { 
+		// TODO ver se after nao e ciclo ou if
 
 		String forCondition = null;
-		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condi��es
+		String firstCondition = null, secondCondition = null, thirdCondition = null; //FOR tem 3 condicoes
 		ArrayList<String> variablesUsed = new ArrayList<String>();
 		HashMap<String, ArrayList<String>> forVariablesUsed = new HashMap<String, ArrayList<String>>();
 		SimpleNode cc = (SimpleNode)c.children[0];
@@ -616,8 +626,8 @@ class SimpleNode implements Node {
 		}
 	}
 
-	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) { // caso haja c�digo depois do IF
-		//TODO ver se after n�o � ciclo ou if
+	private void analyzeIf(SimpleNode c, PrintWriter writer, SimpleNode after, HashMap<String, ArrayList<String>> definedVariables) { // caso haja codigo depois do IF
+		//TODO ver se after nao e ciclo ou if
 
 		ArrayList<String> variablesUsed = new ArrayList<String>();
 		String lastConditioned = null;
@@ -665,14 +675,14 @@ class SimpleNode implements Node {
 			{
 				SimpleNode ccc = (SimpleNode)cc.children[l];
 
-				lastLine = analyzeLine(ccc);
+				lastLine = analyzeLine(ccc, definedVariables);
 
 				if(l == 0){
 					if(l == (cc.children.length - 1))
 					{
 						writer.print(" -> " + lastLine);
 						writer.println("[label=\"true\"]");
-						writer.println(lastLine + " -> " + analyzeLine(after));
+						writer.println(lastLine + " -> " + analyzeLine(after,definedVariables));
 					}
 					else
 					{
@@ -685,7 +695,7 @@ class SimpleNode implements Node {
 				{
 					if(l == (cc.children.length - 1))
 					{
-						writer.println(lastConditioned + " -> " + lastLine + "->" + analyzeLine(after));
+						writer.println(lastConditioned + " -> " + lastLine + "->" + analyzeLine(after, definedVariables));
 					}
 					else
 					{
@@ -694,18 +704,18 @@ class SimpleNode implements Node {
 					}					
 				}
 				else if(l == (cc.children.length - 1)){
-					writer.println("->" + lastLine + " -> " + analyzeLine(after));
+					writer.println("->" + lastLine + " -> " + analyzeLine(after, definedVariables));
 				}
 				else
 					writer.print(" -> " + lastLine);
 			}
 		}
-		else{								//caso seja uma linha so -> ligar c�digo dentro do if ao restante c�digo do block
-			lastLine = analyzeLine(cc);
+		else{								//caso seja uma linha so -> ligar codigo dentro do if ao restante codigo do block
+			lastLine = analyzeLine(cc, definedVariables);
 			writer.print(" -> " + lastLine);
 			//lastConditioned.add(lastLine);
 			writer.println("[label=\"true\"]");
-			writer.println(lastLine + " -> " + analyzeLine(after));
+			writer.println(lastLine + " -> " + analyzeLine(after, definedVariables));
 		}
 
 		if(c.children.length > 2)
@@ -717,14 +727,14 @@ class SimpleNode implements Node {
 				{
 					SimpleNode ccc = (SimpleNode)cc.children[l];
 
-					lastLine = analyzeLine(ccc);
+					lastLine = analyzeLine(ccc, definedVariables);
 
 					if(l == 0){
 						if(l == (cc.children.length - 1))
 						{
 							writer.print(" -> " + lastLine);
 							writer.println("[label=\"false\"]");
-							writer.println(lastLine + " -> " + analyzeLine(after));
+							writer.println(lastLine + " -> " + analyzeLine(after, definedVariables));
 						}
 						else
 						{
@@ -737,7 +747,7 @@ class SimpleNode implements Node {
 					{
 						if(l == (cc.children.length - 1))
 						{
-							writer.println(lastConditioned + " -> " + lastLine + "->" + analyzeLine(after));
+							writer.println(lastConditioned + " -> " + lastLine + "->" + analyzeLine(after, definedVariables));
 						}
 						else
 						{
@@ -746,23 +756,23 @@ class SimpleNode implements Node {
 						}					
 					}
 					else if(l == (cc.children.length - 1)){
-						writer.println("->" + lastLine + " -> " + analyzeLine(after));
+						writer.println("->" + lastLine + " -> " + analyzeLine(after, definedVariables));
 					}
 					else
 						writer.print(" -> " + lastLine);
 				}
 			}
 			else{								//caso seja uma linha so
-				lastLine = analyzeLine(cc);
+				lastLine = analyzeLine(cc, definedVariables);
 				writer.print(" -> " + lastLine);
 				//lastConditioned.add(lastLine);
 				writer.print("[label=\"false\"]");
-				writer.println(lastLine + " -> " + analyzeLine(after));
+				writer.println(lastLine + " -> " + analyzeLine(after, definedVariables));
 			}
 		}
-		else ////////////////////////////////// Quando n�o h� false, pode-se saltar o if
+		else ////////////////////////////////// Quando nao ha false, pode-se saltar o if
 		{
-			writer.println(ifCondition + " -> " + analyzeLine(after) + "[label=\"false\"]");
+			writer.println(ifCondition + " -> " + analyzeLine(after, definedVariables) + "[label=\"false\"]");
 		}
 
 	}
@@ -943,7 +953,7 @@ class SimpleNode implements Node {
 				if(cc.content.equals("\"println\"")) 
 				{
 					cc = (SimpleNode)c.children[3];
-					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma vari�vel ou texto(else)
+					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma variavel ou texto(else)
 					{
 						SimpleNode ccc = (SimpleNode)cc.children[1];
 						str = "\"System.out.println(" + removeQuotationMarks(ccc.content) + ");" + "\"";
@@ -978,7 +988,7 @@ class SimpleNode implements Node {
 				return str += ") \"";
 			}
 		}
-		//////////////////////////////////////////// mudar valor vari�vel
+		//////////////////////////////////////////// mudar valor variavel
 		if(c.name.equals("\"Assignment\""))
 		{
 			str += "\"";
@@ -1146,7 +1156,7 @@ class SimpleNode implements Node {
 				if(cc.content.equals("\"println\"")) 
 				{
 					cc = (SimpleNode)c.children[3];
-					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma vari�vel ou texto(else)
+					if(cc.name.equals("\"VariableRead\"")) //Print pode ser de uma variavel ou texto(else)
 					{
 						SimpleNode ccc = (SimpleNode)cc.children[1];
 						str = "\"System.out.println(" + removeQuotationMarks(ccc.content) + ");" + "\"";

@@ -1,9 +1,13 @@
 digraph graphname{
 "void main(String[] args)" -> "int a = 2;" -> "change(a) " -> "For(i = 0;i<2;i++)"
-"For(i = 0;i<2;i++)" -> "System.out.println(\"Cenas\");" -> "System.out.println(\"Cenas 2\");" -> "a = 3"
-"System.out.println(\"Cenas 2\");" -> "For(i = 0;i<2;i++)"
-"a = 3" -> "If(a<3)"
-"If(a<3)" -> "System.out.println(\"menor\");"[label="false"]
+"For(i = 0;i<2;i++)" -> "int cenas = 2;" -> "int lala = 5;" -> "int lili = lala+cenas" -> "System.out.println(lili);" -> "a = 3;"
+"System.out.println(lili);" -> "For(i = 0;i<2;i++)"
+"For(i = 0;i<2;i++)" -> "System.out.println(lili);"[label="i" style="dotted"]
+"int lala = 5;" -> "int lili = lala+cenas"[label="lala" style="dotted"]
+"int lili = lala+cenas" -> "System.out.println(lili);"[label="lili" style="dotted"]
+"int cenas = 2;" -> "int lili = lala+cenas"[label="cenas" style="dotted"]
+"a = 3;" -> "If(a<3)"
+"If(a<3)" -> "System.out.println(\"menor\");"[label="true"]
 "System.out.println(\"menor\");" -> "System.out.println(\"Chegou ao fim\");"
 "If(a<3)" -> "System.out.println(\"maior\");"[label="false"]
 "System.out.println(\"maior\");" -> "System.out.println(\"Chegou ao fim\");"
